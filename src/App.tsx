@@ -4,9 +4,9 @@ import { syncThemeWithLocal } from "./helpers/theme_helpers";
 import { useTranslation } from "react-i18next";
 import "./localization/i18n";
 import { updateAppLanguage } from "./helpers/language_helpers";
-import { router } from "./routes/router";
-import { RouterProvider } from "@tanstack/react-router";
-
+import { BrowserRouter, Route, Routes } from "react-router";
+import HomePage from "./pages/HomePage";
+import BaseLayout from "./layouts/BaseLayout";
 export default function App() {
   const { i18n } = useTranslation();
 
@@ -15,7 +15,15 @@ export default function App() {
     updateAppLanguage(i18n);
   }, [i18n]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <BaseLayout>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+        </Routes>
+      </BrowserRouter>
+    </BaseLayout>
+  );
 }
 
 const root = createRoot(document.getElementById("app")!);

@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcMain } from "electron";
 import registerListeners from "./helpers/ipc/listeners-register";
 // "electron-squirrel-startup" seems broken when packaging with vite
 //import started from "electron-squirrel-startup";
@@ -60,3 +60,7 @@ app.on("activate", () => {
   }
 });
 //osX only ends
+
+ipcMain.on("app_version", (event) => {
+  event.sender.send("app_version", { version: app.getVersion() });
+});
