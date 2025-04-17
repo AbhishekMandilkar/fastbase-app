@@ -123,8 +123,9 @@ export function ConnectionList({ ...props }: React.ComponentProps<typeof Sidebar
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarFooter className="flex flex-row justify-between items-center">
         <ThemeToggle />
+        <div className="text-xs text-muted-foreground">{APP_VERSION}</div>
       </SidebarFooter>
     </Sidebar>
   )

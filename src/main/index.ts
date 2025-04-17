@@ -27,6 +27,7 @@ app.whenReady().then(async() => {
 
   // IPC test
   ipcMain.on('ping', () => console.log('pong'))
+  import('../shared/lib/updater').then((updater) => updater.init()).catch(console.error)
   await runMigrations()
 
   createWindow()

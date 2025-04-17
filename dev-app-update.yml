@@ -1,3 +1,4 @@
-provider: generic
-url: https://example.com/auto-updates
-updaterCacheDirName: shadcn-electron-app-updater
+provider: github
+owner: AbhishekMandilkar
+repo: fastbase-app
+updaterCacheDirName: fastbase-app-updater

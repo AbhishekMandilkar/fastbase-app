@@ -1,6 +1,7 @@
 import electronUpdater, {UpdateInfo} from 'electron-updater'
 // import { showUpdaterWindow, windows } from './window'
 import {MenuItem, dialog} from 'electron'
+import {showUpdaterWindow, windows} from './window'
 
 electronUpdater.autoUpdater.fullChangelog = true
 electronUpdater.autoUpdater.autoDownload = false
@@ -10,9 +11,9 @@ electronUpdater.autoUpdater.autoDownload = false
 if (import.meta.env.PROD) {
   electronUpdater.autoUpdater.setFeedURL({
     provider: 'github',
-    host: 'electron-releases.umida.co',
-    owner: 'egoist',
-    repo: 'querybase'
+    host: `https://fasbase-release-server.vercel.app/update/${process.platform}/${APP_VERSION}`,
+    owner: 'AbhishekMandilkar',
+    repo: 'fastbase-app'
   })
 }
 
@@ -27,25 +28,26 @@ function enableMenuItem() {
 }
 
 export function init() {
+  console.log('==========updater init==========')
   electronUpdater.autoUpdater.addListener('update-downloaded', () => {
-    // const window = windows.get('updater')
-    // if (window) {
-    //   window.webContents.send('update-downloaded')
-    // }
+    const window = windows.get('updater')
+    if (window) {
+      window.webContents.send('update-downloaded')
+    }
   })
 
   electronUpdater.autoUpdater.addListener('update-not-available', () => {
     updateInfo = null
     enableMenuItem()
-    // const window = windows.get('updater')
-    // window?.close()
+    const window = windows.get('updater')
+    window?.close()
   })
 
-  electronUpdater.autoUpdater.addListener('download-progress', () => {
-    // const window = windows.get('updater')
-    // if (window) {
-    //   window.webContents.send('download-progress', info)
-    // }
+  electronUpdater.autoUpdater.addListener('download-progress', (info) => {
+    const window = windows.get('updater')
+    if (window) {
+      window.webContents.send('download-progress', info)
+    }
   })
 }
 
@@ -54,7 +56,7 @@ export function getUpdateInfo() {
 }
 
 export function getCurrentVersion() {
-  return electronUpdater.autoUpdater.currentVersion
+  return APP_VERSION;
 }
 
 export async function checkForUpdatesMenuItem(_menuItem: MenuItem) {
@@ -70,12 +72,12 @@ export async function checkForUpdatesMenuItem(_menuItem: MenuItem) {
     electronUpdater.autoUpdater.currentVersion.compare(updates.updateInfo.version) === -1
   ) {
     updateInfo = updates.updateInfo
-    // showUpdaterWindow()
+    showUpdaterWindow()
   } else {
     updateInfo = null
     await dialog.showMessageBox({
       title: 'No updates available',
-      message: `You are already using the latest version of .`
+      message: `You are already using the latest version of ${APP_NAME}.`
     })
   }
 }
