@@ -1,17 +1,17 @@
 import electronUpdater, {UpdateInfo} from 'electron-updater'
 // import { showUpdaterWindow, windows } from './window'
-import {MenuItem, dialog} from 'electron'
+import {MenuItem, dialog, app} from 'electron'
 import {showUpdaterWindow, windows} from './window'
 
 electronUpdater.autoUpdater.fullChangelog = true
 electronUpdater.autoUpdater.autoDownload = false
 
 // electronUpdater.autoUpdater.forceDevUpdateConfig = import.meta.env.DEV
-
+const appVersion = app.getVersion()
 if (import.meta.env.PROD) {
   electronUpdater.autoUpdater.setFeedURL({
     provider: 'github',
-    host: `https://fasbase-release-server.vercel.app/update/${process.platform}/${APP_VERSION}`,
+    host: `https://fasbase-release-server.vercel.app/update/${process.platform}/${appVersion}`,
     owner: 'AbhishekMandilkar',
     repo: 'fastbase-app'
   })
@@ -56,7 +56,7 @@ export function getUpdateInfo() {
 }
 
 export function getCurrentVersion() {
-  return APP_VERSION;
+  return APP_VERSION || appVersion;
 }
 
 export async function checkForUpdatesMenuItem(_menuItem: MenuItem) {
