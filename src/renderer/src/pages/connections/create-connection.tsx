@@ -3,9 +3,10 @@ import {Label} from '../../components/ui/label'
 import {Input} from '../../components/ui/input'
 import {Button} from '../../components/ui/button'
 
-import {Loader2Icon, Plug} from 'lucide-react'
+import {FlaskConical, Loader2Icon, Plug} from 'lucide-react'
 import ImportUrlDialog from './import-url-dialog'
 import {useCreateConnection} from './hooks/use-create-connection'
+import {Tooltip, TooltipContent, TooltipTrigger} from '@/components/ui/tooltip'
 
 const CreateConnection = () => {
   const {
@@ -23,6 +24,8 @@ const CreateConnection = () => {
     nicknameInputRef,
     isConnecting,
     validationErrors,
+    handleTestConnection,
+    isTesting,
   } = useCreateConnection()
 
   return (
@@ -36,11 +39,11 @@ const CreateConnection = () => {
           <form className="grid w-full items-center gap-4 grid-cols-2">
             <div className="flex flex-col space-y-1.5 col-span-2">
               <Label htmlFor="nickname">Nickname</Label>
-              <Input 
-                id="nickname" 
-                ref={nicknameInputRef} 
+              <Input
+                id="nickname"
+                ref={nicknameInputRef}
                 placeholder="Enter connection nickname"
-                className={validationErrors.nickname ? 'border-red-500' : ''} 
+                className={validationErrors.nickname ? 'border-red-500' : ''}
               />
               {validationErrors.nickname && (
                 <span className="text-sm text-red-500">{validationErrors.nickname}</span>
@@ -48,11 +51,11 @@ const CreateConnection = () => {
             </div>
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="host">Host</Label>
-              <Input 
-                id="host" 
-                ref={hostInputRef} 
+              <Input
+                id="host"
+                ref={hostInputRef}
                 placeholder="localhost"
-                className={validationErrors.host ? 'border-red-500' : ''} 
+                className={validationErrors.host ? 'border-red-500' : ''}
               />
               {validationErrors.host && (
                 <span className="text-sm text-red-500">{validationErrors.host}</span>
@@ -60,11 +63,11 @@ const CreateConnection = () => {
             </div>
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="port">Port</Label>
-              <Input 
-                id="port" 
-                ref={portInputRef} 
+              <Input
+                id="port"
+                ref={portInputRef}
                 placeholder="5432"
-                className={validationErrors.port ? 'border-red-500' : ''} 
+                className={validationErrors.port ? 'border-red-500' : ''}
               />
               {validationErrors.port && (
                 <span className="text-sm text-red-500">{validationErrors.port}</span>
@@ -72,11 +75,11 @@ const CreateConnection = () => {
             </div>
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="user">User</Label>
-              <Input 
-                id="user" 
-                ref={userInputRef} 
+              <Input
+                id="user"
+                ref={userInputRef}
                 placeholder="Enter username"
-                className={validationErrors.user ? 'border-red-500' : ''} 
+                className={validationErrors.user ? 'border-red-500' : ''}
               />
               {validationErrors.user && (
                 <span className="text-sm text-red-500">{validationErrors.user}</span>
@@ -89,7 +92,7 @@ const CreateConnection = () => {
                 type="password"
                 ref={passwordInputRef}
                 placeholder="Enter password"
-                className={validationErrors.password ? 'border-red-500' : ''} 
+                className={validationErrors.password ? 'border-red-500' : ''}
               />
               {validationErrors.password && (
                 <span className="text-sm text-red-500">{validationErrors.password}</span>
@@ -97,11 +100,11 @@ const CreateConnection = () => {
             </div>
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="database">Database</Label>
-              <Input 
-                id="database" 
-                ref={databaseInputRef} 
+              <Input
+                id="database"
+                ref={databaseInputRef}
                 placeholder="Enter database name"
-                className={validationErrors.database ? 'border-red-500' : ''} 
+                className={validationErrors.database ? 'border-red-500' : ''}
               />
               {validationErrors.database && (
                 <span className="text-sm text-red-500">{validationErrors.database}</span>
@@ -109,7 +112,21 @@ const CreateConnection = () => {
             </div>
           </form>
         </CardContent>
-        <CardFooter className="flex justify-end gap-4">
+        <CardFooter className="flex justify-end gap-2">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="outline"
+                className="transition-all duration-300 "
+                onClick={handleTestConnection}
+                size="icon"
+                disabled={isTesting}
+              >
+                {isTesting ? <Loader2Icon className="animate-spin" /> : <FlaskConical />}
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Test connection</TooltipContent>
+          </Tooltip>
           <ImportUrlDialog
             isOpen={importFromUrlDialogOpen}
             onOpenChange={handleImportFromUrlDialogOpen}

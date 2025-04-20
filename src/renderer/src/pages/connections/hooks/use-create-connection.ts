@@ -7,6 +7,7 @@ import {ConnectionInsert} from 'src/shared/schema/app-schema'
 import {useMutation} from '@tanstack/react-query'
 import {queryClient} from '@/lib/query-client'
 import {GET_CONNECTIONS_QUERY_KEY} from '../connection-list'
+import {toast} from 'sonner'
 
 // Add validation schema
 const connectionSchema = z.object({
@@ -179,12 +180,13 @@ export const useCreateConnection = () => {
 
       await actionsProxy.connectDatabase.invoke({ connectionId: testConnection.id })
       await actionsProxy.deleteConnection.invoke(testConnection.id)
-      
+      toast.success('Connection successful')
       setIsTesting(false)
       return true
     } catch (error) {
       console.error('Failed to test database connection:', error)
       setIsTesting(false)
+      toast.error('Connection failed')
       return false
     }
   }
