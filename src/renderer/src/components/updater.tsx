@@ -3,12 +3,22 @@ import { useEffect, useState } from 'react'
 import prettyBytes from 'pretty-bytes'
 import { Button } from '@renderer/components/ui/button'
 import { actionsProxy } from '@renderer/lib/action-proxy'
-import {useQuery} from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@renderer/components/ui/alert-dialog"
 
-export function Component() {
+export function UpdaterView() {
   const updateInfoQuery = useQuery({
     queryKey: ['updateInfo'],
-        queryFn: () => actionsProxy.getUpdateInfo.invoke()
+    queryFn: () => actionsProxy.getUpdateInfo.invoke()
   });
 
   const [progressInfo, setProgressInfo] = useState<ProgressInfo | null>(null)
@@ -38,26 +48,24 @@ export function Component() {
   if (!updateInfo) return null
 
   return (
-    <>
-      <div className="flex h-screen flex-grow flex-col">
-        <div className="shrink-0 drag-region">
-          <div className="flex h-9 items-center justify-center text-center text-sm font-medium">
-            App Update
-          </div>
-          <div className="border-b px-3 py-3 pb-5">
+    <AlertDialog defaultOpen>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>
+            {status === 'downloaded'
+              ? `New version of ${APP_NAME} is ready to install`
+              : status === 'downloading'
+              ? `Downloading ${APP_NAME}...`
+              : `New version of ${APP_NAME} is available`}
+          </AlertDialogTitle>
+          <AlertDialogDescription className="space-y-4">
             {status ? (
               <>
-                <div className="mb-2 flex items-center justify-between">
-                  <span>
-                    {status === 'downloaded'
-                      ? `New version of ${APP_NAME} is ready to install`
-                      : `Downloading ${APP_NAME}...`}
-                  </span>
-
-                  {progressInfo && status === 'downloading' && (
+                {progressInfo && status === 'downloading' && (
+                  <div className="text-right">
                     <span>{prettyBytes(progressInfo.bytesPerSecond)}/s</span>
-                  )}
-                </div>
+                  </div>
+                )}
                 <div className="relative h-5 w-full overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-800">
                   <div
                     className="h-full rounded-full bg-blue-500 transition-all"
@@ -68,65 +76,56 @@ export function Component() {
                 </div>
               </>
             ) : (
-              <>
-                <p className="font-bold">New version of {APP_NAME} is available</p>
-                <p className="mt-1">
-                  {APP_NAME} {updateInfo?.version} is now available — you have {APP_VERSION}. Would
-                  you like to update now?
-                </p>
-              </>
+              <p>
+                {APP_NAME} {updateInfo?.version} is now available — you have {APP_VERSION}.
+                Would you like to update now?
+              </p>
             )}
-            <div className="mt-3 flex items-center gap-1">
-              {status === 'downloaded' ? (
-                <Button
-                  size="sm"
-                  onClick={() => {
-                    actionsProxy.quitAndInstall.invoke()
-                  }}
-                >
-                  Install Update
-                </Button>
-              ) : (
-                <Button
-                  size="sm"
-                  disabled={status === 'downloading'}
-                  onClick={() => {
-                    setStatus('downloading')
-                    actionsProxy.downloadUpdate.invoke()
-                  }}
-                >
-                  Download Update
-                </Button>
-              )}
-              <Button
-                size="sm"
-                onClick={() => {
-                  actionsProxy.closeWindow.invoke({ id: 'updater' })
-                }}
-              >
-                Cancel
-              </Button>
-            </div>
-          </div>
-        </div>
-        <div className="flex-grow divide-y overflow-auto">
-          {Array.isArray(updateInfo?.releaseNotes) && (
-            <div>
-              {updateInfo.releaseNotes.map((note: any) => {
-                return (
-                  <div key={note.version} className="p-3">
-                    <h2 className="mb-3 text-xl font-bold">v{note.version}</h2>
+
+            {Array.isArray(updateInfo?.releaseNotes) && (
+              <div className="mt-4 max-h-[200px] overflow-auto">
+                {updateInfo.releaseNotes.map((note: any) => (
+                  <div key={note.version} className="mb-4">
+                    <h3 className="mb-2 text-sm font-semibold">v{note.version}</h3>
                     <div
-                      className="prose prose-invert"
+                      className="prose prose-sm prose-invert"
                       dangerouslySetInnerHTML={{ __html: note.note }}
-                    ></div>
+                    />
                   </div>
-                )
-              })}
-            </div>
+                ))}
+              </div>
+            )}
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel
+            onClick={() => {
+              actionsProxy.closeWindow.invoke({ id: 'updater' })
+            }}
+          >
+            Cancel
+          </AlertDialogCancel>
+          {status === 'downloaded' ? (
+            <AlertDialogAction
+              onClick={() => {
+                actionsProxy.quitAndInstall.invoke()
+              }}
+            >
+              Install Update
+            </AlertDialogAction>
+          ) : (
+            <AlertDialogAction
+              disabled={status === 'downloading'}
+              onClick={() => {
+                setStatus('downloading')
+                actionsProxy.downloadUpdate.invoke()
+              }}
+            >
+              Download Update
+            </AlertDialogAction>
           )}
-        </div>
-      </div>
-    </>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   )
 }

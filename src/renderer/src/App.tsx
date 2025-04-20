@@ -1,15 +1,14 @@
-import { ThemeProvider } from 'next-themes'
-import { Route, Routes, Navigate, HashRouter } from 'react-router'
+import {Route, Routes, Navigate, HashRouter} from 'react-router'
 import Connections from './pages/connections/connections'
-import { SidebarProvider } from './components/ui/sidebar'
+import {SidebarProvider} from './components/ui/sidebar'
 import Database from './pages/database/database'
-import { store } from './store/store'
-import { Provider } from 'react-redux'
+import {store} from './store/store'
+import {Provider} from 'react-redux'
 import TablesView from './pages/database/tables-view/tables-view'
 import TableExplorer from './components/database/table-explorer/table-explorer'
 import SqlQueriesView from './pages/database/sql-queries-view/sql-queries-view'
-import { Toaster } from 'sonner'
-import {Component} from './components/updater'
+import {Toaster} from 'sonner'
+import {UpdaterView} from './components/updater'
 
 function App(): JSX.Element {
   return (
@@ -21,11 +20,17 @@ function App(): JSX.Element {
               path="/"
               element={
                 <SidebarProvider>
-                  <Connections />{' '}
+                  <Connections />
+                  <UpdaterView />
                 </SidebarProvider>
               }
             />
-
+            <Route
+              path="/updater"
+              element={
+                <UpdaterView />
+              }
+            />
             <Route
               path="/connection/:connectionId"
               element={
@@ -46,7 +51,6 @@ function App(): JSX.Element {
         </HashRouter>
       </Provider>
       <Toaster visibleToasts={1} richColors position="bottom-right" />
-      <Component />
     </main>
   )
 }

@@ -2,7 +2,7 @@ import {app, BrowserWindow, ipcMain} from 'electron'
 import {electronApp, optimizer} from '@electron-toolkit/utils'
 import {runMigrations} from '../shared/lib/app-db'
 import {actions} from '../shared/lib/actions'
-import {createWindow} from '../shared/lib/window'
+import {createMainWindow, createWindow} from '../shared/lib/window'
 
 
 for (const name of Object.keys(actions)) {
@@ -30,12 +30,12 @@ app.whenReady().then(async() => {
   import('../shared/lib/updater').then((updater) => updater.init()).catch(console.error)
   await runMigrations()
 
-  createWindow()
+  createMainWindow()
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
+    if (BrowserWindow.getAllWindows().length === 0) createMainWindow()
   })
 })
 

@@ -2,6 +2,7 @@ import electronUpdater, {UpdateInfo} from 'electron-updater'
 // import { showUpdaterWindow, windows } from './window'
 import {MenuItem, dialog, app} from 'electron'
 import {showUpdaterWindow, windows} from './window'
+import {is} from '@electron-toolkit/utils'
 
 electronUpdater.autoUpdater.fullChangelog = true
 electronUpdater.autoUpdater.autoDownload = false
@@ -11,7 +12,6 @@ const appVersion = app.getVersion()
 if (import.meta.env.PROD) {
   electronUpdater.autoUpdater.setFeedURL({
     provider: 'github',
-    host: `https://fasbase-release-server.vercel.app/update/${process.platform}/${appVersion}`,
     owner: 'AbhishekMandilkar',
     repo: 'fastbase-app'
   })
@@ -56,20 +56,19 @@ export function getUpdateInfo() {
 }
 
 export function getCurrentVersion() {
-  return APP_VERSION || appVersion;
+  return electronUpdater.autoUpdater.currentVersion?.version;
 }
 
 export async function checkForUpdatesMenuItem(_menuItem: MenuItem) {
   menuItem = _menuItem
   menuItem.enabled = false
-
   const updates = await electronUpdater.autoUpdater.checkForUpdates()
 
   enableMenuItem()
 
   if (
-    updates &&
-    electronUpdater.autoUpdater.currentVersion.compare(updates.updateInfo.version) === -1
+    updates?.updateInfo?.version &&
+    electronUpdater.autoUpdater.currentVersion.compare(updates.updateInfo.version) < 0
   ) {
     updateInfo = updates.updateInfo
     showUpdaterWindow()
@@ -83,18 +82,24 @@ export async function checkForUpdatesMenuItem(_menuItem: MenuItem) {
 }
 
 export async function checkForUpdates() {
-  const updates = await electronUpdater.autoUpdater.checkForUpdates()
+  try {
+    console.log('==========checkForUpdates==========', electronUpdater.autoUpdater.currentVersion)
+    const updates = await electronUpdater.autoUpdater.checkForUpdates()
+    if (
+      updates?.updateInfo?.version &&
+      electronUpdater.autoUpdater.currentVersion.compare(updates.updateInfo.version) < 0
+    ) {
+      console.log('==========checkForUpdates updates==========', updates)
+      updateInfo = updates.updateInfo
+      return updateInfo
+    }
 
-  if (
-    updates &&
-    electronUpdater.autoUpdater.currentVersion.compare(updates.updateInfo.version) === -1
-  ) {
-    updateInfo = updates.updateInfo
-    return updateInfo
+    updateInfo = null
+    return null
+  } catch (error) {
+    console.error('==========checkForUpdates error==========', error)
+    return null
   }
-
-  updateInfo = null
-  return null
 }
 
 export function quitAndInstall() {

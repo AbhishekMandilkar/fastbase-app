@@ -1,4 +1,4 @@
-import { BrowserWindow, shell } from 'electron'
+import { BrowserWindow, BrowserWindowConstructorOptions, shell } from 'electron'
 import { join } from 'path'
 import { is } from '@electron-toolkit/utils'
 import { fileURLToPath } from 'url'
@@ -11,7 +11,15 @@ export type WindowId = 'main' | 'updater'
 
 export const windows = new Map<WindowId, BrowserWindow>()
 
-export function createWindow() {
+export function createWindow({
+  id,
+  path: urlPath,
+  windowOptions
+}: {
+  id: WindowId
+  path?: string
+  windowOptions?: BrowserWindowConstructorOptions
+}) {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 900,
@@ -26,8 +34,7 @@ export function createWindow() {
     // expose window controlls in Windows/Linux
     ...(process.platform !== 'darwin' ? { titleBarOverlay: true } : {})
   })
-
-  windows.set('main', mainWindow)
+  windows.set(id, mainWindow)
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
@@ -61,14 +68,31 @@ export const createMainWindow = () => {
     return window
   }
 
-  return createWindow()
+  return createWindow({
+    id: 'main',
+    windowOptions: {
+      minWidth: 800,
+      minHeight: 600,
+      trafficLightPosition: { x: 12, y: 16 }
+    }
+  })
 }
 
 export function showUpdaterWindow() {
   let window = windows.get('updater')
 
   if (!window) {
-    window = createWindow()
+    window = createWindow({
+      id: 'updater',
+      path: '/updater',
+      windowOptions: {
+        width: 700,
+        height: 500,
+        resizable: false
+        // vibrancy: "sidebar",
+        // visualEffectState: "active",
+      }
+    })
   } else {
     window.show()
   }

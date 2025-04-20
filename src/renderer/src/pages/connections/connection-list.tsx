@@ -23,6 +23,9 @@ import useConnectDatabase from '../database/hooks/use-connect-database'
 import { toast } from 'sonner'
 import { Connection } from 'src/shared/schema/app-schema'
 import { useQuery } from '@tanstack/react-query'
+import {CircleXIcon, RefreshCcwIcon} from 'lucide-react'
+import {Button} from '@/components/ui/button'
+import {useEffect} from 'react'
 
 export const GET_CONNECTIONS_QUERY_KEY = 'getConnections'
 
@@ -124,9 +127,55 @@ export function ConnectionList({ ...props }: React.ComponentProps<typeof Sidebar
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="flex flex-row justify-between items-center">
-        <ThemeToggle />
+        <span className="flex flex-row">
+          <ThemeToggle />
+          <CheckForUpdates />
+        </span>
         <div className="text-xs text-muted-foreground">{APP_VERSION}</div>
       </SidebarFooter>
     </Sidebar>
   )
 }
+
+
+const CheckForUpdates = () => {
+  const {
+    data: updateInfo,
+    isLoading,
+    isError,
+    error,
+    refetch: checkForUpdates
+  } = useQuery({
+    queryKey: ['checkForUpdates'],
+    queryFn: () => actionsProxy.checkForUpdates.invoke(),
+    networkMode: 'always',
+    refetchOnWindowFocus: true,
+    refetchInterval: 5 * 60 * 1000,
+    enabled: false
+  })
+  console.log(updateInfo, isLoading, isError, error)
+  const renderIcon = () => {
+    if (isLoading) {
+      return <RefreshCcwIcon className="w-4 h-4 animate-spin" />
+    }
+    if (error) {
+      return <CircleXIcon className="w-4 h-4" />
+    }
+    return <RefreshCcwIcon className="w-4 h-4" />
+  }
+
+  const handleClick = async () => {
+    if (true) {
+      await actionsProxy.showUpdaterWindow.invoke()
+    } else {
+      await checkForUpdates()
+    }
+  }
+
+  return (
+    <Button variant="ghost" size="icon" onClick={handleClick}>
+      {renderIcon()}
+    </Button>
+  )
+}
+
