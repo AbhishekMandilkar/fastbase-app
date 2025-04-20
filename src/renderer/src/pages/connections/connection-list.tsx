@@ -23,9 +23,8 @@ import useConnectDatabase from '../database/hooks/use-connect-database'
 import { toast } from 'sonner'
 import { Connection } from 'src/shared/schema/app-schema'
 import { useQuery } from '@tanstack/react-query'
-import {CircleXIcon, RefreshCcwIcon} from 'lucide-react'
-import {Button} from '@/components/ui/button'
-import {useEffect} from 'react'
+import { CircleXIcon, RefreshCcwIcon } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 export const GET_CONNECTIONS_QUERY_KEY = 'getConnections'
 
@@ -137,7 +136,6 @@ export function ConnectionList({ ...props }: React.ComponentProps<typeof Sidebar
   )
 }
 
-
 const CheckForUpdates = () => {
   const {
     data: updateInfo,
@@ -153,7 +151,6 @@ const CheckForUpdates = () => {
     refetchInterval: 5 * 60 * 1000,
     enabled: false
   })
-  console.log(updateInfo, isLoading, isError, error)
   const renderIcon = () => {
     if (isLoading) {
       return <RefreshCcwIcon className="w-4 h-4 animate-spin" />
@@ -165,10 +162,14 @@ const CheckForUpdates = () => {
   }
 
   const handleClick = async () => {
-    if (true) {
+    if (Boolean(updateInfo)) {
       await actionsProxy.showUpdaterWindow.invoke()
     } else {
-      await checkForUpdates()
+      const { data } = await checkForUpdates()
+      console.log(data)
+      if (!data) {
+        toast.info('No updates available')
+      }
     }
   }
 
@@ -178,4 +179,3 @@ const CheckForUpdates = () => {
     </Button>
   )
 }
-
