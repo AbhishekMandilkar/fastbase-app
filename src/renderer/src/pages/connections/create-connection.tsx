@@ -27,7 +27,7 @@ const CreateConnection = () => {
 
   return (
     <div className="w-full mx-auto flex justify-center items-center">
-      <Card className="min-w-[40%]">
+      <Card className="min-w-[40%] bg-primary-foreground">
         <CardHeader>
           <CardTitle>Create PostgreSQL Connection</CardTitle>
           <CardDescription>Create a new connection to a PostgreSQL database</CardDescription>

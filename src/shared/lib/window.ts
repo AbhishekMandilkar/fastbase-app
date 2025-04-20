@@ -22,8 +22,8 @@ export function createWindow({
 }) {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 900,
-    height: 670,
+    width: 1600,
+    height: 1000,
     show: false,
     autoHideMenuBar: false,
     webPreferences: {
