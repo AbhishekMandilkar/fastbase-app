@@ -57,7 +57,7 @@ const config = {
         NSDownloadsFolderUsageDescription:
           "Application requests access to the user's Downloads folder."
       }
-    ],
+    ]
   },
   dmg: {
     artifactName: '${productName}-${version}-${arch}.${ext}'
@@ -71,11 +71,18 @@ const config = {
     artifactName: '${name}-${version}.${ext}'
   },
   npmRebuild: true,
-  publish: {
-    provider: 'github',
-    owner: 'AbhishekMandilkar',
-    repo: 'fastbase-app'
-  }
+  publish: [
+    {
+      provider: 'generic',
+      url: 'https://fasbase-release-server.vercel.app/'
+    },
+    {
+      provider: 'github',
+      owner: 'AbhishekMandilkar',
+      repo: 'fastbase-app',
+      releaseType: 'draft' // or 'release'
+    }
+  ]
 }
 
 module.exports = config
