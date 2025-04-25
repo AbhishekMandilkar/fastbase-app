@@ -1,20 +1,17 @@
-import electronUpdater, {UpdateInfo} from 'electron-updater'
-// import { showUpdaterWindow, windows } from './window'
+import {UpdateInfo, autoUpdater} from 'electron-updater'
+import { showUpdaterWindow, windows } from './window'
 import {MenuItem, dialog, app} from 'electron'
-import {showUpdaterWindow, windows} from './window'
 import {is} from '@electron-toolkit/utils'
 
-electronUpdater.autoUpdater.fullChangelog = true
-electronUpdater.autoUpdater.autoDownload = false
+autoUpdater.fullChangelog = true
+autoUpdater.autoDownload = false
 
-// electronUpdater.autoUpdater.forceDevUpdateConfig = import.meta.env.DEV
 const appVersion = app.getVersion()
+const server = "https://fasbase-release-server.vercel.app/";
+const url = `${server}/update/${process.platform}/${appVersion}`
+
 if (import.meta.env.PROD) {
-  electronUpdater.autoUpdater.setFeedURL({
-    provider: 'github',
-    owner: 'AbhishekMandilkar',
-    repo: 'fastbase-app'
-  })
+  autoUpdater.setFeedURL(url)
 }
 
 let updateInfo: UpdateInfo | null = null
@@ -29,21 +26,21 @@ function enableMenuItem() {
 
 export function init() {
   console.log('==========updater init==========')
-  electronUpdater.autoUpdater.addListener('update-downloaded', () => {
+  autoUpdater.addListener('update-downloaded', () => {
     const window = windows.get('updater')
     if (window) {
       window.webContents.send('update-downloaded')
     }
   })
 
-  electronUpdater.autoUpdater.addListener('update-not-available', () => {
+  autoUpdater.addListener('update-not-available', () => {
     updateInfo = null
     enableMenuItem()
     const window = windows.get('updater')
     window?.close()
   })
 
-  electronUpdater.autoUpdater.addListener('download-progress', (info) => {
+  autoUpdater.addListener('download-progress', (info) => {
     const window = windows.get('updater')
     if (window) {
       window.webContents.send('download-progress', info)
@@ -56,19 +53,19 @@ export function getUpdateInfo() {
 }
 
 export function getCurrentVersion() {
-  return electronUpdater.autoUpdater.currentVersion?.version;
+  return autoUpdater.currentVersion?.version;
 }
 
 export async function checkForUpdatesMenuItem(_menuItem: MenuItem) {
   menuItem = _menuItem
   menuItem.enabled = false
-  const updates = await electronUpdater.autoUpdater.checkForUpdates()
+  const updates = await autoUpdater.checkForUpdates()
 
   enableMenuItem()
 
   if (
     updates?.updateInfo?.version &&
-    electronUpdater.autoUpdater.currentVersion.compare(updates.updateInfo.version) < 0
+    autoUpdater.currentVersion.compare(updates.updateInfo.version) < 0
   ) {
     updateInfo = updates.updateInfo
     showUpdaterWindow()
@@ -83,11 +80,11 @@ export async function checkForUpdatesMenuItem(_menuItem: MenuItem) {
 
 export async function checkForUpdates() {
   try {
-    console.log('==========checkForUpdates==========', electronUpdater.autoUpdater.currentVersion)
-    const updates = await electronUpdater.autoUpdater.checkForUpdates()
+    console.log('==========checkForUpdates==========', autoUpdater.currentVersion)
+    const updates = await autoUpdater.checkForUpdates()
     if (
       updates?.updateInfo?.version &&
-      electronUpdater.autoUpdater.currentVersion.compare(updates.updateInfo.version) < 0
+      autoUpdater.currentVersion.compare(updates.updateInfo.version) < 0
     ) {
       console.log('==========checkForUpdates updates==========', updates)
       updateInfo = updates.updateInfo
@@ -103,9 +100,9 @@ export async function checkForUpdates() {
 }
 
 export function quitAndInstall() {
-  electronUpdater.autoUpdater.quitAndInstall()
+  autoUpdater.quitAndInstall()
 }
 
 export function downloadUpdate() {
-  return electronUpdater.autoUpdater.downloadUpdate()
+  return autoUpdater.downloadUpdate()
 }
