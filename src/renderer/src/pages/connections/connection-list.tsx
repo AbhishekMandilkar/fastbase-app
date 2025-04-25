@@ -30,7 +30,7 @@ export const GET_CONNECTIONS_QUERY_KEY = 'getConnections'
 
 enum ListType {
   Recent = 'Recent',
-  Favourite = 'Favourite'
+  Favourite = 'Favourites'
 }
 
 const data = {
