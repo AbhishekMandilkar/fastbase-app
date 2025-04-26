@@ -90,9 +90,9 @@ export function showUpdaterWindow() {
       windowOptions: {
         width: 700,
         height: 500,
-        resizable: false
-        // vibrancy: "sidebar",
-        // visualEffectState: "active",
+        resizable: false,
+        vibrancy: "sidebar",
+        visualEffectState: "active",
       }
     })
   } else {

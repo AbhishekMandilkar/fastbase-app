@@ -1,36 +1,22 @@
-import React, { useState } from 'react'
-import CodeEditor from '@uiw/react-textarea-code-editor'
+import React from 'react'
 import AppHeader from '@/components/app-header'
-import { Button } from '@/components/ui/button'
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
-import {useTheme} from 'next-themes'
+import {Button} from '@/components/ui/button'
+import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from '@/components/ui/resizable'
 import {CommandIcon, CornerDownLeftIcon, Loader2Icon} from 'lucide-react'
 import useSqlEditor from './use-sql-editor'
 import {DataTable} from '../table-explorer/data-table/data-table'
+import CodeEditor from './code-editor'
 
 const SqlEditor = () => {
-  const { code, setCode, isDarkMode, handleRunQuery, isPending, results, table } = useSqlEditor()
+  const { code, isPending, results, table, editorRef, handleRunQuery } =
+    useSqlEditor()
 
   return (
     <div className="flex flex-col h-screen w-full">
       <AppHeader title="SQL Editor" />
       <ResizablePanelGroup direction="vertical" autoSaveId="persistence">
         <ResizablePanel minSize={20}>
-          <CodeEditor
-            value={code}
-            language="sql"
-            placeholder="Please enter SQL code."
-            onChange={(evn) => setCode(evn.target.value)}
-            padding={15}
-            style={{
-              backgroundColor: isDarkMode ? 'rgb(31, 31, 31)' : '#f5f5f5',
-              fontFamily:
-                'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
-              width: '100%',
-              height: '100%',
-              flex: 1
-            }}
-          />
+          <CodeEditor defaultValue={code} editorRef={editorRef} />
         </ResizablePanel>
         <ResizableHandle />
         <ResizablePanel minSize={20}>
@@ -69,4 +55,4 @@ const SqlEditor = () => {
   )
 }
 
-export default SqlEditor
+export default React.memo(SqlEditor)

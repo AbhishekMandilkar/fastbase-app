@@ -4,11 +4,12 @@
     <meta charset="UTF-8" />
     <title>Fastbase</title>
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+     <!-- Allow all blob: and data: URLs -->
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self' https://fastbase.in; script-src 'self' https://unpkg.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:"
+      content="default-src 'self' https://fastbase.in; script-src 'self' https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' data: object-src 'self' blob:"
     />
-    <script src="https://unpkg.com/react-scan/dist/auto.global.js"></script>
+    <!-- <script src="https://unpkg.com/react-scan/dist/auto.global.js"></script> -->
   </head>
 
   <body>
