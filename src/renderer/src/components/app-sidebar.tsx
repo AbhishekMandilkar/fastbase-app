@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { ArchiveX, CodeIcon, Command, File, Inbox, Send, TableIcon, Trash2 } from 'lucide-react'
+import { ArchiveX, CodeIcon, Command, File, Inbox, MessageCircleIcon, Send, TableIcon, Trash2 } from 'lucide-react'
 
 import { Label } from '@/components/ui/label'
 import {
@@ -36,6 +36,11 @@ const data = {
       title: 'SQL Queries',
       url: 'sql-queries',
       icon: CodeIcon
+    },
+    {
+      title: 'Chat',
+      url: 'chat',
+      icon: MessageCircleIcon
     }
   ]
 }

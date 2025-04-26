@@ -3,6 +3,7 @@ import { join } from 'path'
 import { is } from '@electron-toolkit/utils'
 import { fileURLToPath } from 'url'
 import { dirname } from 'path'
+import {disableCors} from './cors'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
@@ -35,6 +36,7 @@ export function createWindow({
     ...(process.platform !== 'darwin' ? { titleBarOverlay: true } : {})
   })
   windows.set(id, mainWindow)
+  disableCors(mainWindow)
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()

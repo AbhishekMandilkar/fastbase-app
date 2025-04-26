@@ -8,15 +8,17 @@ interface DataTableProps<TData> {
   table: TableType<TData>
   className?: string
   isLoading?: boolean
+  tableClassName?: string
+  containerClassName?: string
 }
 
-export function DataTable<TData>({ table, isLoading }: DataTableProps<TData>) {
+export function DataTable<TData>({ table, isLoading, tableClassName, containerClassName }: DataTableProps<TData>) {
 
 
   return (
-      <div className="overflow-auto">
+      <div className={cn("overflow-auto", containerClassName)}>
         <Table {...{
-            className: 'divTable',
+            className: cn("divTable", tableClassName),
           }}>
           <TableHeader className="bg-muted/50">
             {table.getHeaderGroups().map((headerGroup) => (
