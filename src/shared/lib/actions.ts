@@ -213,7 +213,8 @@ import {Connection, ConnectionInsert, QueryInsert} from '../schema/app-schema'
     }),
   
     createQuery: chain.input<QueryInsert>().action(async ({ input }) => {
-      await appDB.insert(appSchema.query).values(input)
+      const result = await appDB.insert(appSchema.query).values(input).returning()
+      return result[0]
     }),
   
     copyToClipboard: chain.input<{ text: string }>().action(async ({ input }) => {

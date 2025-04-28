@@ -39,6 +39,7 @@ interface SidebarListingProps<T> {
   }[]
   // note this key should be always same as the key of the item read the item key from the item
   actionLoaderKey?: string
+  headerRight?: React.ReactNode
 }
 
 function SidebarListing<T>({
@@ -51,7 +52,8 @@ function SidebarListing<T>({
   activeItemKey,
   getKey,
   dropDownActions,
-  actionLoaderKey
+  actionLoaderKey,
+  headerRight
 }: SidebarListingProps<T>) {
   const isMobile = useIsMobile();
 
@@ -96,6 +98,7 @@ function SidebarListing<T>({
       <SidebarHeader className="gap-3.5 border-b p-4">
         <div className="flex w-full items-center justify-between">
           <div className="text-base font-medium text-foreground">{title}</div>
+          {headerRight}
         </div>
         <SidebarInput
           placeholder="Type to search..."

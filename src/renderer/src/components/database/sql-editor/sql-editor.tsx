@@ -4,53 +4,34 @@ import {Button} from '@/components/ui/button'
 import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from '@/components/ui/resizable'
 import {CommandIcon, CornerDownLeftIcon, Loader2Icon} from 'lucide-react'
 import useSqlEditor from './use-sql-editor'
-import {DataTable} from '../table-explorer/data-table/data-table'
 import CodeEditor from './code-editor'
 import {Query} from 'src/shared/schema/app-schema'
 import DataTableV2 from '../table-explorer/data-table/data-table-v2'
-
-const SqlEditor = (props: {selectedQuery: Query | undefined, isLoading: boolean}) => {
-  const {isPending, results, table, editorRef, handleRunQuery } =
-    useSqlEditor({
-      selectedQuery: props.selectedQuery,
-    })
+import { useTheme } from 'next-themes';
+const SqlEditor = (props: { selectedQuery: Query | undefined; isLoading: boolean }) => {
+  const { isPending, results, table, editorRef, handleRunQuery } = useSqlEditor({
+    selectedQuery: props.selectedQuery
+  })
+  const { theme } = useTheme();
 
   return (
-    <div className="flex flex-col h-screen w-full relative">
-      <AppHeader title="SQL Editor" />
-      {props.isLoading && (
-        <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center opacity-50 bg-background">
-          <Loader2Icon className="size-8 animate-spin" />
-        </div>
-      )}
-      <ResizablePanelGroup direction="vertical" autoSaveId="persistence" className="">
+    <div className="flex flex-col flex-1 self-stretch !w-[calc(100vw-18rem)] overflow-hidden">
+      <AppHeader title={props.selectedQuery?.title || 'New Query'} />
+      <ResizablePanelGroup direction="vertical" autoSaveId="persistence">
         <ResizablePanel minSize={20}>
-          <CodeEditor 
-            defaultValue={props.selectedQuery?.query || ''} 
-            editorRef={editorRef} 
-            key={props.selectedQuery?.id} 
+          <CodeEditor
+            defaultValue={props.selectedQuery?.query || ''}
+            editorRef={editorRef}
+            key={props.selectedQuery?.id}
             onRunQuery={handleRunQuery}
+            theme={theme}
           />
         </ResizablePanel>
         <ResizableHandle />
-        <ResizablePanel minSize={20} className="border-0">
-          <div className="flex flex-col h-full">
-            <div className="flex p-2 bg-primary-foreground justify-between items-center">
-              <small className="text-lg font-medium leading-none">Results</small>
-              <Button onClick={() => handleRunQuery()} disabled={isPending} size={"sm"}>
-                {isPending ? 'Running...' : 'Run'}
-                {isPending ? (
-                  <Loader2Icon className="w-4 h-4 animate-spin" />
-                ) : (
-                  <span className="flex items-center gap-1 text-muted-foreground">
-                    <CommandIcon className="w-4 h-4" />
-                    <span>+</span>
-                    <CornerDownLeftIcon />
-                  </span>
-                )}
-              </Button>
-            </div>
-            <div className="flex flex-col h-full p-2 font-mono flex-1 self-stretch !w-[calc(100vw-18rem)] overflow-hidden">
+        <ResizablePanel minSize={20}>
+          <div className="flex flex-col h-full w-full">
+            <ActionBar handleRunQuery={handleRunQuery} isQueryRunning={isPending} />
+            <div className="flex flex-col h-full p-2 font-mono flex-1 self-stretch">
               {results.map((result, index) => (
                 <div key={index}>
                   {result.error ? (
@@ -60,7 +41,7 @@ const SqlEditor = (props: {selectedQuery: Query | undefined, isLoading: boolean}
                   )}
                 </div>
               ))}
-              <DataTableV2 table={table} />
+              {results.length > 0 && <DataTableV2 table={table} />}
             </div>
           </div>
         </ResizablePanel>
@@ -70,3 +51,23 @@ const SqlEditor = (props: {selectedQuery: Query | undefined, isLoading: boolean}
 }
 
 export default React.memo(SqlEditor)
+
+export const ActionBar = (props: { handleRunQuery: () => void; isQueryRunning: boolean }) => {
+  return (
+    <div className="flex p-2 items-center justify-between border-b">
+      <p className="text-lg font-medium leading-none">Results</p>
+      <Button onClick={() => props.handleRunQuery()} disabled={props.isQueryRunning}>
+        {props.isQueryRunning ? 'Running...' : 'Run'}
+        {props.isQueryRunning ? (
+          <Loader2Icon className="w-4 h-4 animate-spin" />
+        ) : (
+          <span className="flex items-center gap-1 text-muted-foreground">
+            <CommandIcon className="w-4 h-4" />
+            <span>+</span>
+            <CornerDownLeftIcon />
+          </span>
+        )}
+      </Button>
+    </div>
+  )
+}

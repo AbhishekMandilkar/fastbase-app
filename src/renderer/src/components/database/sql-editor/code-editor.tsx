@@ -1,7 +1,7 @@
 // components/SqlEditor.tsx
 
-import React, {useEffect} from 'react'
-import ControlledEditor, {useMonaco} from '@monaco-editor/react'
+import React, {useCallback, useEffect} from 'react'
+import ControlledEditor, {Monaco, useMonaco} from '@monaco-editor/react'
 import {editor} from 'monaco-editor'
 import {useTheme} from 'next-themes'
 
@@ -9,21 +9,18 @@ const CodeEditor: React.FC<{
   defaultValue: string
   editorRef: React.MutableRefObject<editor.IStandaloneCodeEditor | null>
   onRunQuery?: () => void
-}> = ({ defaultValue, editorRef, onRunQuery }) => {
-  const { theme } = useTheme();
-  const monaco = useMonaco();
+  theme: string | undefined
+}> = ({ defaultValue, editorRef, onRunQuery, theme }) => {
   const isDarkMode = theme === 'dark'
-  
-  function handleEditorDidMount(editor: editor.IStandaloneCodeEditor) {
+  const handleEditorDidMount = useCallback((editor: editor.IStandaloneCodeEditor, monaco: Monaco) => {
     editorRef.current = editor
-    
-    // Add keyboard shortcut for Cmd+Enter
-    if (monaco) {
-      editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
-        onRunQuery?.()
-      })
-    }
-  }
+  
+    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
+      onRunQuery?.()
+    })
+  }, [onRunQuery, editorRef]);
+  
+  console.log('RENDERING CODE EDITOR')
 
   return (
     <div style={{ height: '100%', width: '100%' }}>
@@ -31,9 +28,6 @@ const CodeEditor: React.FC<{
         height="100%"
         defaultLanguage="sql"
         defaultValue={defaultValue}
-        onChange={(value, event) => {
-          console.log(value, event)
-        }}
         theme={isDarkMode ? 'vs-dark' : 'light'}
         options={{
           fontSize: 14,
@@ -48,5 +42,5 @@ const CodeEditor: React.FC<{
 }
 
 export default React.memo(CodeEditor, (prevProps, nextProps) => {
-  return prevProps.defaultValue === nextProps.defaultValue
+  return prevProps.defaultValue === nextProps.defaultValue && prevProps.theme === nextProps.theme
 })

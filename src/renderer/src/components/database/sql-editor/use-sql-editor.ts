@@ -12,7 +12,7 @@ import useSqlQuery from '../hooks/use-sql-query'
 import {editor} from 'monaco-editor'
 import useRecentQueries, {RECENT_QUERIES_QUERY_KEY} from '../recent-queries/use-recent-queries'
 import {queryClient} from '@/lib/query-client'
-import {NEW_QUERY_TITLE} from '../recent-queries/utils'
+import {NEW_QUERY_ID, NEW_QUERY_TITLE} from '../recent-queries/utils'
 import {Query} from 'src/shared/schema/app-schema'
 import {actionsProxy} from '@/lib/action-proxy'
 const useSqlEditor = (props: {selectedQuery: Query | undefined}) => {
@@ -47,27 +47,40 @@ const useSqlEditor = (props: {selectedQuery: Query | undefined}) => {
     getPaginationRowModel: getPaginationRowModel()
   })
   
-  const handleRunQuery = async () => {
-    const query = editorRef.current?.getValue() || ''
+
+  const handleRunQuery = useCallback(async () => {
+    const query = editorRef.current?.getValue() || '';
     if (query.length === 0) {
       return;
     }
-    const resp = await handleQuery(query)
-    setResults(resp || [])
+  
+    const resp = await handleQuery(query);
+    setResults(resp || []);
+  
     if (props.selectedQuery) {
       await actionsProxy.updateQuery.invoke({
         id: props.selectedQuery.id,
-        query: query
-      })
+        query: query,
+      });
     } else {
       await handleCreateQuery({
         connectionId: connectionId as string,
         query: query,
-        title: NEW_QUERY_TITLE
-      })
+        title: NEW_QUERY_TITLE,
+      });
     }
-    queryClient.invalidateQueries({queryKey: [RECENT_QUERIES_QUERY_KEY, connectionId]})
-  }
+  
+    queryClient.invalidateQueries({ queryKey: [RECENT_QUERIES_QUERY_KEY, connectionId] });
+  }, [
+    editorRef,
+    handleQuery,
+    setResults,
+    props.selectedQuery,
+    actionsProxy.updateQuery,
+    handleCreateQuery,
+    connectionId,
+    queryClient,
+  ]);
 
 
   return {

@@ -15,6 +15,7 @@ export const getQueryNamePrompt = (queryString: string) => {
 }
 
 export const NEW_QUERY_TITLE = 'New Query'
+export const NEW_QUERY_ID = 'new-query'
 
 export const getQueryName = async (queryString: string): Promise<string> => {
   const res = await api.post('/chat/generate', {

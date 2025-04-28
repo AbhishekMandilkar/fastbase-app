@@ -10,4 +10,4 @@ const AppHeader = (props: { title: string | React.ReactNode; right?: React.React
   )
 }
 
-export default AppHeader
+export default React.memo(AppHeader)

@@ -4,7 +4,7 @@ import { useMutation } from '@tanstack/react-query'
 import { Query } from 'src/shared/schema/app-schema'
 import { NEW_QUERY_TITLE } from './utils'
 import { actionsProxy } from '@/lib/action-proxy'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { TypingAnimation } from '@/components/typing-animation'
 import { queryClient } from '@/lib/query-client'
 import { RECENT_QUERIES_QUERY_KEY } from './use-recent-queries'
@@ -17,9 +17,11 @@ const RecentQueryItem = ({ query }: { query: Query }) => {
   const [showTyping, setShowTyping] = useState(false)
 
   const generateQueryName = async () => {
-    if (query.title !== NEW_QUERY_TITLE) {
+    // only generate query name if the query is not a new query and the query is empty
+    if (query.title !== NEW_QUERY_TITLE || query.query === '') {
       return
     }
+    console.log('generating query name', query.query, query.title)
     const text = await getQueryName(query.query)
     console.log(text)
     const updatedQuery = await updateQuery({
@@ -48,4 +50,10 @@ const RecentQueryItem = ({ query }: { query: Query }) => {
   )
 }
 
-export default RecentQueryItem
+export default React.memo(RecentQueryItem, (prevProps, nextProps) => {
+  return (
+    prevProps.query.id === nextProps.query.id ||
+    prevProps.query.title === nextProps.query.title ||
+    prevProps.query.query === nextProps.query.query
+  )
+})

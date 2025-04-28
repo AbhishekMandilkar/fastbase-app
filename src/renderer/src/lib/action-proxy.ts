@@ -6,7 +6,7 @@ export const actionsProxy = new Proxy<ActionsProxy>({} as any, {
   get: (_, prop) => {
     const invoke = async (input: any) => {
       const res = await window.electron.ipcRenderer.invoke(prop.toString(), input)
-      console.log('invoke', prop.toString(), input, JSON.stringify(res, null, 2))
+      console.log('invoke', prop.toString(), input)
       return res
     }
     return {
