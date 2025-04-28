@@ -13,7 +13,7 @@ import {
   import { desc, eq } from 'drizzle-orm'
   import { checkForUpdates, downloadUpdate, getCurrentVersion, getUpdateInfo, quitAndInstall } from './updater'
 import {showUpdaterWindow, WindowId, windows} from './window'
-import {Connection, ConnectionInsert} from '../schema/app-schema'
+import {Connection, ConnectionInsert, QueryInsert} from '../schema/app-schema'
 
   
   type ActionContext = {
@@ -201,12 +201,18 @@ import {Connection, ConnectionInsert} from '../schema/app-schema'
     updateQuery: chain.input<Partial<Query> & { id: string }>().action(async ({ input }) => {
       await appDB.update(appSchema.query).set(input).where(eq(appSchema.query.id, input.id))
     }),
+
+    getQuery: chain.input<{ id: string }>().action(async ({ input }) => {
+      return appDB.query.query.findFirst({
+        where: eq(appSchema.query.id, input.id)
+      })
+    }),
   
     deleteQuery: chain.input<{ id: string }>().action(async ({ input }) => {
       await appDB.delete(appSchema.query).where(eq(appSchema.query.id, input.id))
     }),
   
-    createQuery: chain.input<Query>().action(async ({ input }) => {
+    createQuery: chain.input<QueryInsert>().action(async ({ input }) => {
       await appDB.insert(appSchema.query).values(input)
     }),
   

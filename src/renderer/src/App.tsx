@@ -34,7 +34,7 @@ function App(): JSX.Element {
                   <Route path=":tableName" element={<TableExplorer />} />
                 </Route>
                 <Route path="sql-queries" element={<SqlQueriesView />}>
-                  <Route path=":queryId" element={null} />
+                  <Route path=":queryId" element={<SqlQueriesView />} />
                 </Route>
                 <Route path="chat" element={<ChatView />} />
               </Route>

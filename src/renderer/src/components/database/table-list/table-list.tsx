@@ -24,16 +24,16 @@ function TableList() {
     [handleSetSelectedTableConfig]
   )
 
-  const renderTableItem = (table: TableWithColumns) => (
+  const renderTableItem = ({item}: {item: TableWithColumns}) => (
     <Link
-      to={table.name}
+      to={item.name}
       className="flex items-center justify-between w-full"
-      onClick={() => handleSelectTable(table)}
+      onClick={() => handleSelectTable(item)}
     >
-      <span>{table.name}</span>
+      <span>{item.name}</span>
       <span className="flex items-center gap-2">
         <Columns4Icon className="size-4" />
-        {table.columns.length}
+        {item.columns.length}
       </span>
     </Link>
   )

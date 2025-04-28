@@ -6,17 +6,25 @@ import {CommandIcon, CornerDownLeftIcon, Loader2Icon} from 'lucide-react'
 import useSqlEditor from './use-sql-editor'
 import {DataTable} from '../table-explorer/data-table/data-table'
 import CodeEditor from './code-editor'
+import {Query} from 'src/shared/schema/app-schema'
 
-const SqlEditor = () => {
+const SqlEditor = (props: {selectedQuery: Query | undefined, isLoading: boolean}) => {
   const { code, isPending, results, table, editorRef, handleRunQuery } =
-    useSqlEditor()
+    useSqlEditor({
+      selectedQuery: props.selectedQuery,
+    })
 
   return (
-    <div className="flex flex-col h-screen w-full">
+    <div className="flex flex-col h-screen w-full relative">
       <AppHeader title="SQL Editor" />
-      <ResizablePanelGroup direction="vertical" autoSaveId="persistence">
+      {props.isLoading && (
+        <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center opacity-50 bg-background">
+          <Loader2Icon className="size-8 animate-spin" />
+        </div>
+      )}
+      <ResizablePanelGroup direction="vertical" autoSaveId="persistence" className="">
         <ResizablePanel minSize={20}>
-          <CodeEditor defaultValue={code} editorRef={editorRef} />
+          <CodeEditor defaultValue={props.selectedQuery?.query || ''} editorRef={editorRef} key={props.selectedQuery?.id} />
         </ResizablePanel>
         <ResizableHandle />
         <ResizablePanel minSize={20}>

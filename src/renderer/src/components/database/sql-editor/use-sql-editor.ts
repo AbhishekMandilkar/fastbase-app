@@ -10,14 +10,18 @@ import {
 } from '@tanstack/react-table'
 import useSqlQuery from '../hooks/use-sql-query'
 import {editor} from 'monaco-editor'
-
-const useSqlEditor = () => {
+import useRecentQueries, {RECENT_QUERIES_QUERY_KEY} from '../recent-queries/use-recent-queries'
+import {queryClient} from '@/lib/query-client'
+import {NEW_QUERY_TITLE} from '../recent-queries/utils'
+import {Query} from 'src/shared/schema/app-schema'
+import {actionsProxy} from '@/lib/action-proxy'
+const useSqlEditor = (props: {selectedQuery: Query | undefined}) => {
   const { theme } = useTheme()
   const { handleQuery, isPending } = useSqlQuery()
   const { connectionId } = useParams()
   const isDarkMode = theme === 'dark' 
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
-
+  const {isLoading, handleCreateQuery} = useRecentQueries({fetchOnMount: false})
   const [code, setCode] = useState(`SELECT * FROM users`)
   const [results, setResults] = useState<QueryDatabaseResult[]>([])
 
@@ -47,6 +51,19 @@ const useSqlEditor = () => {
     const resp = await handleQuery(editorRef.current?.getValue() || '')
     console.info(resp)
     setResults(resp)
+    if (props.selectedQuery) {
+      await actionsProxy.updateQuery.invoke({
+        id: props.selectedQuery.id,
+        query: editorRef.current?.getValue() || ''
+      })
+    } else {
+      await handleCreateQuery({
+        connectionId: connectionId as string,
+        query: editorRef.current?.getValue() || '',
+        title: NEW_QUERY_TITLE
+      })
+    }
+    queryClient.invalidateQueries({queryKey: [RECENT_QUERIES_QUERY_KEY, connectionId]})
   }
 
 

@@ -15,7 +15,7 @@ const CodeEditor: React.FC<{
     editorRef.current = editor
   }
   return (
-    <div style={{ height: '500px', width: '100%' }}>
+    <div style={{ height: '100%', width: '100%' }}>
       <ControlledEditor
         height="100%"
         defaultLanguage="sql"
