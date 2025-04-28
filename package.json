@@ -88,6 +88,7 @@
     "tailwindcss-animate": "^1.0.7",
     "url-parse": "^1.5.10",
     "use-react-router-breadcrumbs": "^4.0.1",
+    "usehooks-ts": "^3.1.1",
     "vaul": "^1.1.2",
     "zod": "^3.24.1"
   },

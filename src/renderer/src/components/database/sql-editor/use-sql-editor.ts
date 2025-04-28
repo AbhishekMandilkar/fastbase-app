@@ -46,7 +46,7 @@ const useSqlEditor = (props: {selectedQuery: Query | undefined}) => {
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel()
   })
-
+  
   const handleRunQuery = async () => {
     const query = editorRef.current?.getValue() || ''
     if (query.length === 0) {

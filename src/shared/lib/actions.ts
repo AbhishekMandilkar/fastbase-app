@@ -10,7 +10,7 @@ import {
   import { Config, Query } from '../types'
   import { connectDatabase, disconnectDatabase, getDatabaseSchemas, getDatabaseTables, queryDatabase } from './connection'
   import { appDB, appSchema } from './app-db'
-  import { desc, eq } from 'drizzle-orm'
+  import { and, desc, eq, like } from 'drizzle-orm'
   import { checkForUpdates, downloadUpdate, getCurrentVersion, getUpdateInfo, quitAndInstall } from './updater'
 import {showUpdaterWindow, WindowId, windows} from './window'
 import {Connection, ConnectionInsert, QueryInsert} from '../schema/app-schema'
@@ -191,10 +191,10 @@ import {Connection, ConnectionInsert, QueryInsert} from '../schema/app-schema'
       return input
     }),
   
-    getQueries: chain.input<{ connectionId: string }>().action(async ({ input }) => {
+    getQueries: chain.input<{ connectionId: string, query?: string }>().action(async ({ input }) => {
       return appDB.query.query.findMany({
         orderBy: desc(appSchema.query.createdAt),
-        where: eq(appSchema.query.connectionId, input.connectionId)
+        where: and(eq(appSchema.query.connectionId, input.connectionId), like(appSchema.query.query, `%${input.query || ''}%`))
       })
     }),
   

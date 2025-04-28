@@ -15,11 +15,6 @@ enum tabs {
   structure = 'structure'
 }
 
-const tableExplorerTabs = [
-  { value: tabs.rows, title: 'Rows', icon: Rows3Icon },
-  { value: tabs.structure, title: 'Structure', icon: Table }
-]
-
 const TableExplorer = () => {
   const { table, tableName, data, isLoading } = useTableExplorer()
   const isEmpty = data.length === 0

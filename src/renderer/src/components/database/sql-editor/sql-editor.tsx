@@ -7,6 +7,7 @@ import useSqlEditor from './use-sql-editor'
 import {DataTable} from '../table-explorer/data-table/data-table'
 import CodeEditor from './code-editor'
 import {Query} from 'src/shared/schema/app-schema'
+import DataTableV2 from '../table-explorer/data-table/data-table-v2'
 
 const SqlEditor = (props: {selectedQuery: Query | undefined, isLoading: boolean}) => {
   const {isPending, results, table, editorRef, handleRunQuery } =
@@ -49,7 +50,7 @@ const SqlEditor = (props: {selectedQuery: Query | undefined, isLoading: boolean}
                 )}
               </Button>
             </div>
-            <div className="flex flex-col h-full p-2 font-mono">
+            <div className="flex flex-col h-full p-2 font-mono flex-1 self-stretch !w-[calc(100vw-18rem)] overflow-hidden">
               {results.map((result, index) => (
                 <div key={index}>
                   {result.error ? (
@@ -59,7 +60,7 @@ const SqlEditor = (props: {selectedQuery: Query | undefined, isLoading: boolean}
                   )}
                 </div>
               ))}
-              <DataTable table={table} />
+              <DataTableV2 table={table} />
             </div>
           </div>
         </ResizablePanel>

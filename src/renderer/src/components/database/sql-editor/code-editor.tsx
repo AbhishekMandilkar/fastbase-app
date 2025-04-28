@@ -25,54 +25,6 @@ const CodeEditor: React.FC<{
     }
   }
 
-  useEffect(() => {
-    if (monaco) {
-      monaco.languages.registerCompletionItemProvider('sql', {
-        // @ts-ignore
-        provideCompletionItems: () => {
-          const suggestions = [
-            {
-              label: 'SELECT',
-              kind: monaco.languages.CompletionItemKind.Keyword,
-              insertText: 'SELECT ',
-            },
-            {
-              label: 'FROM',
-              kind: monaco.languages.CompletionItemKind.Keyword,
-              insertText: 'FROM ',
-            },
-            {
-              label: 'WHERE',
-              kind: monaco.languages.CompletionItemKind.Keyword,
-              insertText: 'WHERE ',
-            },
-            {
-              label: 'INSERT',
-              kind: monaco.languages.CompletionItemKind.Keyword,
-              insertText: 'INSERT ',
-            },
-            {
-              label: 'UPDATE',
-              kind: monaco.languages.CompletionItemKind.Keyword,
-              insertText: 'UPDATE ',
-            },
-            {
-              label: 'DELETE',
-              kind: monaco.languages.CompletionItemKind.Keyword,
-              insertText: 'DELETE ',
-            },
-            {
-              label: 'JOIN',
-              kind: monaco.languages.CompletionItemKind.Keyword,
-              insertText: 'JOIN ',
-            },
-          ];
-          return { suggestions };
-        }
-      });
-    }
-  }, [monaco]);
-
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <ControlledEditor
