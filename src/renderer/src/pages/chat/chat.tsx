@@ -69,7 +69,7 @@ const ChatView = () => {
 
   return (
     <div className="flex-1 flex flex-col gap-4 justify-center items-center">
-      <TypingAnimation text="What do you want to know from your data?" duration={50} />
+      <TypingAnimation text="What do you want to know from your data?" duration={50} className="font-display text-center text-4xl font-bold leading-[5rem] tracking-[-0.02em] drop-shadow-sm" />
       {isDatabaseStructureLoading ? (
         <div className="flex-1 flex flex-col gap-4 justify-center items-center">
           <Loader2 className="size-10 animate-spin" />

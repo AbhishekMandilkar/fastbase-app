@@ -34,13 +34,12 @@ export function TypingAnimation({
   }, [duration, i]);
 
   return (
-    <h1
+    <p
       className={cn(
-        "font-display text-center text-4xl font-bold leading-[5rem] tracking-[-0.02em] drop-shadow-sm",
         className,
       )}
     >
       {displayedText ? displayedText : text}
-    </h1>
+    </p>
   );
 }
