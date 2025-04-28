@@ -33,7 +33,7 @@ const data = {
       icon: TableIcon
     },
     {
-      title: 'SQL Queries',
+      title: 'SQL Editor',
       url: 'sql-queries',
       icon: CodeIcon
     },

@@ -9,7 +9,7 @@ import CodeEditor from './code-editor'
 import {Query} from 'src/shared/schema/app-schema'
 
 const SqlEditor = (props: {selectedQuery: Query | undefined, isLoading: boolean}) => {
-  const { code, isPending, results, table, editorRef, handleRunQuery } =
+  const {isPending, results, table, editorRef, handleRunQuery } =
     useSqlEditor({
       selectedQuery: props.selectedQuery,
     })
@@ -24,14 +24,19 @@ const SqlEditor = (props: {selectedQuery: Query | undefined, isLoading: boolean}
       )}
       <ResizablePanelGroup direction="vertical" autoSaveId="persistence" className="">
         <ResizablePanel minSize={20}>
-          <CodeEditor defaultValue={props.selectedQuery?.query || ''} editorRef={editorRef} key={props.selectedQuery?.id} />
+          <CodeEditor 
+            defaultValue={props.selectedQuery?.query || ''} 
+            editorRef={editorRef} 
+            key={props.selectedQuery?.id} 
+            onRunQuery={handleRunQuery}
+          />
         </ResizablePanel>
         <ResizableHandle />
-        <ResizablePanel minSize={20}>
+        <ResizablePanel minSize={20} className="border-0">
           <div className="flex flex-col h-full">
-            <div className="flex border-b p-2 bg-primary-foreground justify-between items-center">
+            <div className="flex p-2 bg-primary-foreground justify-between items-center">
               <small className="text-lg font-medium leading-none">Results</small>
-              <Button onClick={() => handleRunQuery()} disabled={isPending}>
+              <Button onClick={() => handleRunQuery()} disabled={isPending} size={"sm"}>
                 {isPending ? 'Running...' : 'Run'}
                 {isPending ? (
                   <Loader2Icon className="w-4 h-4 animate-spin" />

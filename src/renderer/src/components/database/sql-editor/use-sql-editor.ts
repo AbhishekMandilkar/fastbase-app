@@ -48,18 +48,21 @@ const useSqlEditor = (props: {selectedQuery: Query | undefined}) => {
   })
 
   const handleRunQuery = async () => {
-    const resp = await handleQuery(editorRef.current?.getValue() || '')
-    console.info(resp)
-    setResults(resp)
+    const query = editorRef.current?.getValue() || ''
+    if (query.length === 0) {
+      return;
+    }
+    const resp = await handleQuery(query)
+    setResults(resp || [])
     if (props.selectedQuery) {
       await actionsProxy.updateQuery.invoke({
         id: props.selectedQuery.id,
-        query: editorRef.current?.getValue() || ''
+        query: query
       })
     } else {
       await handleCreateQuery({
         connectionId: connectionId as string,
-        query: editorRef.current?.getValue() || '',
+        query: query,
         title: NEW_QUERY_TITLE
       })
     }

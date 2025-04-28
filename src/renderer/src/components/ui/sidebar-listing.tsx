@@ -21,6 +21,7 @@ interface SidebarListingProps<T> {
   renderItem: ({item}: {item: T}) => React.ReactNode | JSX.Element
   skeletonCount?: number
   activeItemKey?: keyof T
+  getKey?: (item: T) => string
 }
 
 function SidebarListing<T>({
@@ -30,7 +31,8 @@ function SidebarListing<T>({
   selectedItem,
   onSearch,
   renderItem,
-  activeItemKey
+  activeItemKey,
+  getKey
 }: SidebarListingProps<T>) {
   return (
     <Sidebar collapsible="none" className="hidden flex-1 md:flex border-r min-w-64 max-w-64" >
@@ -51,10 +53,10 @@ function SidebarListing<T>({
             ) : (
               <SidebarMenu>
               {(items).map((item, index) => (
-                <SidebarMenuItem key={isLoading ? index : (item as any).name}>
+                <SidebarMenuItem key={isLoading ? index : (getKey?.(item) || (item as any)?.id)}>
                   <SidebarMenuButton 
                     asChild 
-                    isActive={Boolean(selectedItem) && selectedItem === (item as any)[activeItemKey || 'name']}
+                    isActive={Boolean(selectedItem) && selectedItem === (item as any)?.[activeItemKey || 'name']}
                   >
                     {renderItem({item})}
                   </SidebarMenuButton>

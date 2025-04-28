@@ -28,6 +28,7 @@ const RecentQueries = () => {
       isLoading={isLoading}
       selectedItem={queryId}
       activeItemKey="id"
+      getKey={(item) => item?.id}
     />
   )
 }
