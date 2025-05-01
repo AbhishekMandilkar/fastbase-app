@@ -11,14 +11,21 @@ import {NEW_QUERY_ID} from './utils'
 export const RECENT_QUERIES_QUERY_KEY = 'recent-queries'
 
 const useRecentQueries = (params: { fetchOnMount?: boolean }) => {
-  const { connectionId,queryId } = useParams()
-  const pathname = useLocation().pathname
-  console.log('queryId', pathname)
+  const { connectionId } = useParams()
   const navigate = useNavigate()
+  
+  const [isDeleting, setIsDeleting] = useState<string | undefined>(undefined)
+  const [activeTab, setActiveTab] = useState<'Recent' | 'Favorites'>('Recent')
+  
   const [searchQuery, setSearchQuery] = useState('')
   const fetchQueries = useQuery({
-    queryKey: [RECENT_QUERIES_QUERY_KEY, connectionId, searchQuery],
-    queryFn: () => actionsProxy.getQueries.invoke({ connectionId: connectionId as string, query: searchQuery }),
+    queryKey: [RECENT_QUERIES_QUERY_KEY, connectionId, searchQuery, activeTab],
+    queryFn: () =>
+      actionsProxy.getQueries.invoke({
+        connectionId: connectionId as string,
+        query: searchQuery,
+        isFavorite: activeTab === 'Favorites'
+      }),
     enabled: params.fetchOnMount
   })
   const { mutateAsync: deleteQuery } = useMutation({
@@ -28,7 +35,6 @@ const useRecentQueries = (params: { fetchOnMount?: boolean }) => {
     mutationFn: (query: QueryInsert) => actionsProxy.createQuery.invoke(query)
   })
 
-  const [isDeleting, setIsDeleting] = useState<string | undefined>(undefined)
 
   const handleCreateQuery = useCallback(async (query: QueryInsert) => {
     const newQuery = await createQuery.mutateAsync(query)
@@ -52,6 +58,11 @@ const useRecentQueries = (params: { fetchOnMount?: boolean }) => {
 
   const debouncedSearch = useDebounceCallback(setSearchQuery, 500)
 
+  const handleTabChange = useCallback((tab: 'Recent' | 'Favorites') => {
+    setActiveTab(tab)
+    fetchQueries.refetch()
+  }, [fetchQueries])
+
   return {
     queries: fetchQueries.data,
     isLoading: fetchQueries.isPending || createQuery.isPending,
@@ -60,6 +71,8 @@ const useRecentQueries = (params: { fetchOnMount?: boolean }) => {
     isDeleting,
     handleDelete,
     searchQueries: debouncedSearch,
+    handleTabChange,
+    activeTab
   }
 }
 

@@ -32,14 +32,15 @@ interface SidebarListingProps<T> {
   skeletonCount?: number
   activeItemKey?: keyof T
   getKey?: (item: T) => string
-  dropDownActions?: {
+  dropDownActions?: ((item: T) => {
     title: string
     onClick: (item: T) => void
     icon?: LucideIcon
-  }[]
+  }[])
   // note this key should be always same as the key of the item read the item key from the item
   actionLoaderKey?: string
-  headerRight?: React.ReactNode
+  headerRight?: React.ReactNode,
+  subHeader?: React.ReactNode
 }
 
 function SidebarListing<T>({
@@ -53,7 +54,8 @@ function SidebarListing<T>({
   getKey,
   dropDownActions,
   actionLoaderKey,
-  headerRight
+  headerRight,
+  subHeader
 }: SidebarListingProps<T>) {
   const isMobile = useIsMobile();
 
@@ -76,16 +78,22 @@ function SidebarListing<T>({
           align={isMobile ? 'end' : 'start'}
           className="min-w-56 rounded-lg"
         >
-          {dropDownActions?.map((action) => (
-            <DropdownMenuItem
-              key={action.title}
-              onClick={() => action.onClick(item)}
-              className="cursor-pointer"
-            >
-              {action.icon && <action.icon className="w-4 h-4 mr-2" />}
-              {action.title}
-            </DropdownMenuItem>
-          ))}
+          {(() => {
+            const actions = dropDownActions?.(item)
+            if (actions) {
+              return actions.map((action) => (
+                <DropdownMenuItem
+                  key={action.title}
+                  onClick={() => action.onClick(item)}
+                  className="cursor-pointer"
+                >
+                  {action.icon && <action.icon className="w-4 h-4 mr-2" />}
+                  {action.title}
+                </DropdownMenuItem>
+              ))
+            }
+            return null
+          })()}
         </DropdownMenuContent>
       </DropdownMenu>
     )
@@ -100,6 +108,7 @@ function SidebarListing<T>({
           <div className="text-base font-medium text-foreground">{title}</div>
           {headerRight}
         </div>
+        {subHeader}
         <SidebarInput
           placeholder="Type to search..."
           onChange={(e) => onSearch?.(e.target.value)}

@@ -7,15 +7,17 @@ import {
 } from "@tanstack/react-table";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table"
 import DataTableCell from "./table-cell/data-table-cell";
-
+import { cn } from "@/lib/utils";
 interface DataTableV2Props {
   table: ReactTableType<any>;
+  containerClassName?: string;
+  tableClassName?: string;
 }
 
-const DataTableV2: React.FC<DataTableV2Props> = ({ table }) => {
+const DataTableV2: React.FC<DataTableV2Props> = ({ table, containerClassName, tableClassName }) => {
   return (
-    <div className="w-full overflow-auto rounded shadow">
-      <Table className="min-w-full border-collapse table-auto">
+    <div className={cn("w-full overflow-auto rounded shadow", containerClassName)}>
+      <Table className={cn("min-w-full border-collapse table-auto", tableClassName)}>
         <TableHeader className="bg-muted/50">
           {table.getHeaderGroups().map((headerGroup: HeaderGroup<any>) => (
             <TableRow key={headerGroup.id}>
@@ -25,7 +27,7 @@ const DataTableV2: React.FC<DataTableV2Props> = ({ table }) => {
                   <TableHead
                     key={header.id}
                     style={{ width }}
-                     className="text-left text-xs font-medium text-muted-foreground first:pl-2 last:pr-2 border-b border-r font-mono relative"
+                     className="text-left text-xs font-medium text-muted-foreground first:pl-2 last:pr-2 border-b border-r last:border-r-0 font-mono relative"
                   >
                     {header.isPlaceholder ? null : (
                         flexRender(
@@ -54,7 +56,7 @@ const DataTableV2: React.FC<DataTableV2Props> = ({ table }) => {
               {row.getVisibleCells().map((cell) => (
                 <TableCell
                   key={cell.id}
-                  className="text-sm first:pl-2 last:pr-2 border-r whitespace-nowrap overflow-hidden text-ellipsis max-w-xs"
+                  className="text-sm first:pl-2 last:pr-2 border-r last:border-r-0 whitespace-nowrap overflow-hidden text-ellipsis max-w-xs"
                 >
                   <div className="truncate">
                     {/* {flexRender(cell.column.columnDef.cell, cell.getContext())} */}

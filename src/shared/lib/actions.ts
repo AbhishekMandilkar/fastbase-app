@@ -191,10 +191,10 @@ import {Connection, ConnectionInsert, QueryInsert} from '../schema/app-schema'
       return input
     }),
   
-    getQueries: chain.input<{ connectionId: string, query?: string }>().action(async ({ input }) => {
+    getQueries: chain.input<{ connectionId: string, query?: string, isFavorite?: boolean }>().action(async ({ input }) => {
       return appDB.query.query.findMany({
         orderBy: desc(appSchema.query.createdAt),
-        where: and(eq(appSchema.query.connectionId, input.connectionId), like(appSchema.query.query, `%${input.query || ''}%`))
+        where: and(eq(appSchema.query.connectionId, input.connectionId), like(appSchema.query.query, `%${input.query || ''}%`), input.isFavorite ? eq(appSchema.query.isFavorite, true) : undefined)
       })
     }),
   

@@ -6,10 +6,10 @@ import {useQuery} from '@tanstack/react-query';
 import {Outlet, useParams} from 'react-router';
 
 function SqlQueriesView() {
-  const {queryId} = useParams();
+  const { queryId } = useParams()
   const isNewQuery = queryId === NEW_QUERY_ID
-  const {data: query, isLoading: isQueryLoading} = useQuery({
-    queryFn: () => queryId ? actionsProxy.getQuery.invoke({id: queryId}) : undefined,
+  const { data: query, isLoading: isQueryLoading } = useQuery({
+    queryFn: () => (queryId ? actionsProxy.getQuery.invoke({ id: queryId }) : undefined),
     queryKey: ['query', queryId],
     enabled: !isNewQuery
   })
@@ -17,7 +17,8 @@ function SqlQueriesView() {
   return (
     <div className={`flex flex-1 h-screen overflow-y-hidden min-w-[calc(100vw-3rem)]`}>
       <RecentQueries />
-      <SqlEditor selectedQuery={isNewQuery ? undefined : query} isLoading={isQueryLoading} />
+      <SqlEditor
+      selectedQuery={isNewQuery ? undefined : query} isLoading={isQueryLoading} />
     </div>
   )
 }

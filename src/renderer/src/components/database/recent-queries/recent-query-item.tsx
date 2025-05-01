@@ -21,7 +21,6 @@ const RecentQueryItem = ({ query }: { query: Query }) => {
     if (query.title !== NEW_QUERY_TITLE || query.query === '') {
       return
     }
-    console.log('generating query name', query.query, query.title)
     const text = await getQueryName(query.query)
     console.log(text)
     const updatedQuery = await updateQuery({

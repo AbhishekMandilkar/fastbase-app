@@ -35,7 +35,10 @@ export const query = sqliteTable(
     createdAt: integer({ mode: 'timestamp_ms' }).notNull().$defaultFn(defaultNow),
     connectionId: text().notNull(),
     title: text().notNull(),
-    query: text().notNull()
+    query: text().notNull(),
+    isFavorite: integer({
+      mode: 'boolean'
+    })
   },
   (t) => {
     return {

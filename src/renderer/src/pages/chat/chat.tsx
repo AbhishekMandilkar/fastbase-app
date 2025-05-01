@@ -14,6 +14,7 @@ import useSqlQuery from '@/components/database/hooks/use-sql-query'
 import {ColumnDef, getCoreRowModel, getPaginationRowModel, useReactTable} from '@tanstack/react-table'
 import {DataTable} from '@/components/database/table-explorer/data-table/data-table'
 import {TypingAnimation} from '@/components/typing-animation'
+import DataTableV2 from '@/components/database/table-explorer/data-table/data-table-v2'
 
 const ChatView = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -75,11 +76,12 @@ const ChatView = () => {
           <Loader2 className="size-10 animate-spin" />
         </div>
       ) : (
-        <PromptInput className="w-full max-w-[450px]">
+        <PromptInput className="w-full max-w-[450px] bg-primary-foreground">
           <PromptInputTextarea
             placeholder="Ask me anything..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            className=''
           />
           <PromptInputActions className="justify-end pt-2">
             <PromptInputAction tooltip={isLoading ? 'Stop generation' : 'Send message'}>
@@ -99,7 +101,9 @@ const ChatView = () => {
           </PromptInputActions>
         </PromptInput>
       )}
-      {results.length > 0 && <DataTable table={table} />}
+      <div className='container-sm'>
+        {results.length > 0 && <DataTableV2 table={table} containerClassName='border p-2' tableClassName='border rounded-md' />}
+      </div>
     </div>
   )
 }
