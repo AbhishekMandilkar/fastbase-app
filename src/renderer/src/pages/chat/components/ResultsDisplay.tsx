@@ -8,7 +8,7 @@ import {
   AlertTitle,
 } from "@/components/ui/alert"
 import { AlertCircle } from 'lucide-react';
-
+import * as motion from 'motion/react-client';
 type DataRecord = Record<string, unknown>
 
 interface ResultsDisplayProps {
@@ -41,7 +41,7 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
   };
 
   return (
-    <div className="container-sm">
+    <motion.div className="container-sm" layout>
       {error && (
         <Alert variant="destructive">
           <AlertCircle className="h-4 w-4" />
@@ -60,7 +60,7 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
       ) : (
         renderNoResults()
       )}
-    </div>
+    </motion.div>
   );
 };
 

@@ -32,7 +32,7 @@ const ShowQueryDialog: React.FC<ShowQueryDialogProps> = ({
           {triggerButtonText}
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[3xl]">
+      <DialogContent className="sm:max-w-[3xl] min-h-[80vh] overflow-y-auto">
         <div className="grid gap-4 py-4">
           <CodeBlock code={query} />
         </div>

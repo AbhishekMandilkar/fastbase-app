@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
+import * as motion from "motion/react-client";
 import { cn } from "@/lib/utils";
 
 interface TypingAnimationProps {

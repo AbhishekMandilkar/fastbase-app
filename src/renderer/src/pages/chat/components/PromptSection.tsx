@@ -7,7 +7,7 @@ import {
 } from '@/components/prompt-input';
 import { Button } from '@/components/ui/button';
 import { ArrowUp, Square } from 'lucide-react';
-
+import * as motion from 'motion/react-client';
 interface PromptSectionProps {
   input: string;
   setInput: (value: string) => void;
@@ -29,7 +29,7 @@ const PromptSection: React.FC<PromptSectionProps> = ({
   }
 
   return (
-    <div className="max-w-[500px] w-full space-y-1">
+    <motion.div className="max-w-[500px] w-full space-y-1">
       <PromptInput className="w-full bg-primary-foreground">
         <PromptInputTextarea
           placeholder="Ask me anything..."
@@ -55,7 +55,7 @@ const PromptSection: React.FC<PromptSectionProps> = ({
           </PromptInputAction>
         </PromptInputActions>
       </PromptInput>
-    </div>
+    </motion.div>
   );
 };
 
