@@ -1,38 +1,5 @@
-import {
-  PromptInput,
-  PromptInputAction,
-  PromptInputActions,
-  PromptInputTextarea
-} from '@/components/prompt-input'
-import { Button } from '@/components/ui/button'
-import { ArrowUp, CopyIcon, Loader2, Square } from 'lucide-react'
-import React, { useMemo, useRef, useState } from 'react'
-import useDatabaseStructure from './useDatabaseStructure'
-import { formatForeignKeysForPrompt, formatSchemaForPrompt, systemPrompt } from './utils'
-import { api } from '@/lib/axios'
-import useSqlQuery from '@/components/database/hooks/use-sql-query'
-import {
-  ColumnDef,
-  getCoreRowModel,
-  getPaginationRowModel,
-  useReactTable
-} from '@tanstack/react-table'
-import { TypingAnimation } from '@/components/typing-animation'
-import DataTableV2 from '@/components/database/table-explorer/data-table/data-table-v2'
-import CodeBlock from './code-block'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog'
-import { actionsProxy } from '@/lib/action-proxy'
-import { toast } from 'sonner'
-import { Separator } from '@/components/ui/separator'
-import { cn } from '@/lib/utils'
+import {Loader2} from 'lucide-react'
+import {TypingAnimation} from '@/components/typing-animation'
 
 // Component imports
 import PromptSection from './components/PromptSection'
@@ -40,7 +7,7 @@ import ActionBar from './components/ActionBar'
 import ResultsDisplay from './components/ResultsDisplay'
 
 // Hook import
-import { useChatQuery } from './hooks/useChatQuery'
+import {useChatQuery} from './hooks/useChatQuery'
 
 const ChatView = () => {
   const {
