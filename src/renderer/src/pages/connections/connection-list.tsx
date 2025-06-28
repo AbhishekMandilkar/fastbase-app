@@ -166,7 +166,6 @@ const CheckForUpdates = () => {
       await actionsProxy.showUpdaterWindow.invoke()
     } else {
       const { data } = await checkForUpdates()
-      console.log(data)
       if (!data) {
         toast.info('No updates available')
       }

@@ -12,15 +12,13 @@ export const useTableList = () => {
   const debouncedSearch = useDebounce(search)
   const {connectionId} = useParams();
 
-  console.log('connection', connectionId)
   const query = useQuery({
     retry: false,
     refetchOnWindowFocus: false,
     enabled: Boolean(connectionId),
-    queryKey: ['databaseTables', connectionId],
+    queryKey: ['databaseTables', connectionId, debouncedSearch],
     queryFn: async () => {
       if (!connectionId) return null
-
       return actionsProxy.getDatabaseTables.invoke({ connectionId }) || []
     },
     throwOnError: true

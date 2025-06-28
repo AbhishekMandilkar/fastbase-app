@@ -164,7 +164,6 @@ export default function TableSchema() {
           constraints: columnConstraints
         }
       })
-      console.log(enhancedColumns, constraintsMap)
       setTableSchema({
         columns: enhancedColumns,
         constraintsMap
@@ -192,8 +191,8 @@ export default function TableSchema() {
   })
 
   return (
-    <div className="flex flex-col mx-auto w-full max-w-6xl mt-4 space-y-4">
-      <Table className='border'>
+    <div className="flex flex-col mx-auto w-full max-w-6xl space-y-4">
+      <Table className='border-b'>
         <TableHeader className="bg-muted/50">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
@@ -260,7 +259,7 @@ export default function TableSchema() {
 
 const TableLegends = () => {
   return (
-    <div className="flex flex-col items-start gap-2 font-mono text-xs text-muted-foreground border py-4 px-2 rounded">
+    <div className="flex flex-col items-start gap-2 font-mono text-xs text-muted-foreground py-4 px-2 rounded">
       <span className="flex gap-2">FK - Foreign Key</span>
       <span className="flex gap-2">
         <Key className="h-4 w-4 text-amber-500" /> - Primary Key
