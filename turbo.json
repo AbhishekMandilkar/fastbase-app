@@ -1,0 +1,30 @@
+{
+  "$schema": "./node_modules/turbo/schema.json",
+  "envMode": "loose",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"]
+    },
+    "@fastbase/desktop#build": {
+      "dependsOn": ["^check-types"]
+    },
+    "lint": {},
+    "check-types": {
+      "dependsOn": ["^check-types"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "start": {
+      "cache": false,
+      "persistent": true
+    },
+    "drizzle:migrate": {
+      "cache": false
+    },
+    "drizzle:generate": {
+      "cache": false
+    }
+  }
+}
