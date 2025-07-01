@@ -269,7 +269,7 @@ export function Runner() {
               <TooltipTrigger asChild>
                 <Button
                   variant="secondary"
-                  size="iconSm"
+                  size="icon"
                   onClick={() => pageStore.setState(state => ({
                     ...state,
                     query: '',
@@ -288,7 +288,7 @@ export function Runner() {
               <TooltipTrigger asChild>
                 <Button
                   variant="secondary"
-                  size="iconSm"
+                  size="icon"
                   onClick={() => copy(query)}
                 >
                   <RiFileCopyLine />
@@ -304,7 +304,7 @@ export function Runner() {
               <TooltipTrigger asChild>
                 <Button
                   variant="secondary"
-                  size="sm"
+                  size="icon"
                   onClick={() => format()}
                 >
                   <RiBrush2Line />
@@ -317,7 +317,6 @@ export function Runner() {
           </TooltipProvider>
           <Button
             disabled={queryStatus === 'fetching'}
-            size="sm"
             onClick={() => sendQuery(query)}
           >
             <div className="flex items-center gap-1">

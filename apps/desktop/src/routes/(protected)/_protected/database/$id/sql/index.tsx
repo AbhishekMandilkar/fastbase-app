@@ -51,7 +51,7 @@ function DatabaseSqlPage() {
         defaultSize={30}
         minSize={20}
         maxSize={50}
-        className="border bg-background rounded-lg"
+        className="border bg-background"
       >
         <Chat className="h-full" />
       </ResizablePanel>
@@ -59,7 +59,7 @@ function DatabaseSqlPage() {
       <ResizablePanel
         minSize={30}
         maxSize={80}
-        className="flex flex-col gap-4 border bg-background rounded-lg"
+        className="flex flex-col gap-4 border bg-background"
       >
         <Runner />
       </ResizablePanel>

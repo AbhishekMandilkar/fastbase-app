@@ -6,7 +6,6 @@ import { getBase64FromFiles } from '@conar/shared/utils/base64'
 import { Button } from '@conar/ui/components/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@conar/ui/components/select'
 import { useMountedEffect } from '@conar/ui/hookas/use-mounted-effect'
-import { RiCornerDownLeftLine, RiStopCircleLine } from '@remixicon/react'
 import { useStore } from '@tanstack/react-store'
 import { useEffect, useRef } from 'react'
 import { toast } from 'sonner'
@@ -16,6 +15,7 @@ import { queryClient } from '~/main'
 import { pageHooks, pageStore } from '..'
 import { chatInput } from '../-lib'
 import { ChatImages } from './chat-images'
+import {ArrowUp, StopCircleIcon} from 'lucide-react'
 
 function ModelSelector() {
   const model = useStore(pageStore, state => state.model)
@@ -28,7 +28,7 @@ function ModelSelector() {
         model: value as AiSqlChatModel | 'auto',
       }))}
     >
-      <SelectTrigger size="xs">
+      <SelectTrigger size="sm">
         <div className="flex items-center gap-1">
           {model === 'auto' && (
             <span className="text-muted-foreground">
@@ -174,23 +174,23 @@ export function ChatForm({
               ? (
                   <Button
                     type="button"
-                    size="xs"
+                    size="sm"
                     variant="outline"
                     disabled={status === 'submitted'}
                     onClick={stop}
                   >
-                    <RiStopCircleLine className="size-3" />
+                    <StopCircleIcon className="size-3" />
                     Stop
                   </Button>
                 )
               : (
                   <Button
-                    size="xs"
+                    size="sm"
                     disabled={!input.trim()}
                     onClick={() => handleSend(input)}
                   >
                     Send
-                    <RiCornerDownLeftLine className="size-3" />
+                    <ArrowUp className="size-3" />
                   </Button>
                 )}
           </div>

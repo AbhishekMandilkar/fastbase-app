@@ -36,13 +36,11 @@ function DatabasePage() {
   }
 
   return (
-    <>
-      <div className="min-h-[inherit] h-screen flex bg-gray-100 dark:bg-neutral-950/60">
-        <DatabaseSidebar className="w-16" />
-        <div className="w-[calc(100%-var(--sidebar-width-icon))]">
-          <Outlet />
-        </div>
-      </div>
-    </>
+    <div className="min-h-[inherit] h-screen flex bg-gray-100 dark:bg-neutral-950/60">
+    <DatabaseSidebar className="w-16" />
+    <div className="h-screen w-[calc(99vw-var(--sidebar-width-icon))]">
+      <Outlet />
+    </div>
+  </div>
   )
 }
