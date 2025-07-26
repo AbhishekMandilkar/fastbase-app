@@ -1,0 +1,21 @@
+import type { ComponentProps } from 'react'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@fastbase/ui/components/tooltip'
+import { cn } from '@fastbase/ui/lib/utils'
+import {Info} from 'lucide-react'
+
+export function InfoButton({ children, className, ...props }: ComponentProps<'button'>) {
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button type="button" className={cn('p-1 rounded-full hover:bg-accent', className)} {...props}>
+            <Info className="size-3 text-muted-foreground" />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent>
+          {children}
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  )
+}

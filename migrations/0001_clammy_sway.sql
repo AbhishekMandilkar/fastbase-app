@@ -1,1 +1,0 @@
-ALTER TABLE `connection` ADD `favourite` integer;
