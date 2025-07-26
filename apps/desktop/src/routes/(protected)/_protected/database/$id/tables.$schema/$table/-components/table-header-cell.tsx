@@ -3,9 +3,9 @@ import type { Column } from '~/entities/database/table'
 import { Button } from '@fastbase/ui/components/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@fastbase/ui/components/tooltip'
 import { cn } from '@fastbase/ui/lib/utils'
-import { RiArrowDownLine, RiArrowUpDownLine, RiArrowUpLine, RiBookOpenLine, RiEraserLine, RiKey2Line } from '@remixicon/react'
 import { useStore } from '@tanstack/react-store'
 import { usePageContext } from '..'
+import { ArrowUp, ArrowUpDown, ArrowDown, Key, Eraser, Book} from 'lucide-react'
 
 type SortOrder = 'ASC' | 'DESC'
 
@@ -59,20 +59,20 @@ function SortButton({ column }: { column: Column }) {
         <TooltipTrigger asChild>
           <Button
             variant="ghost"
-            size="iconXs"
+            size="icon"
             onClick={handleClick}
             className={cn(order !== null && 'text-primary')}
           >
             {order === 'ASC'
               ? (
-                  <RiArrowUpLine className="size-3" />
+                  <ArrowUp className="size-3" />
                 )
               : order === 'DESC'
                 ? (
-                    <RiArrowDownLine className="size-3" />
+                    <ArrowDown className="size-3" />
                   )
                 : (
-                    <RiArrowUpDownLine className="size-3 opacity-30" />
+                    <ArrowUpDown className="size-3 opacity-30" />
                   )}
           </Button>
         </TooltipTrigger>
@@ -109,7 +109,7 @@ export function TableHeaderCell({ column, isFirst, isLast, className, style }: {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <RiKey2Line className="size-3 text-primary" />
+                    <Key className="size-3 text-primary" />
                   </TooltipTrigger>
                   <TooltipContent>Primary key</TooltipContent>
                 </Tooltip>
@@ -119,7 +119,7 @@ export function TableHeaderCell({ column, isFirst, isLast, className, style }: {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <RiEraserLine className="size-3 opacity-30" />
+                    <Eraser className="size-3 opacity-30" />
                   </TooltipTrigger>
                   <TooltipContent>Nullable</TooltipContent>
                 </Tooltip>
@@ -129,7 +129,7 @@ export function TableHeaderCell({ column, isFirst, isLast, className, style }: {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <RiBookOpenLine className="size-3 opacity-30" />
+                    <Book className="size-3 opacity-30" />
                   </TooltipTrigger>
                   <TooltipContent>Read only</TooltipContent>
                 </Tooltip>

@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@fastbase/ui/components/tooltip'
 import { cn } from '@fastbase/ui/lib/utils'
-import { RiInformationLine } from '@remixicon/react'
+import {Info} from 'lucide-react'
 
 export function InfoButton({ children, className, ...props }: ComponentProps<'button'>) {
   return (
@@ -9,7 +9,7 @@ export function InfoButton({ children, className, ...props }: ComponentProps<'bu
       <Tooltip>
         <TooltipTrigger asChild>
           <button type="button" className={cn('p-1 rounded-full hover:bg-accent', className)} {...props}>
-            <RiInformationLine className="size-3 text-muted-foreground" />
+            <Info className="size-3 text-muted-foreground" />
           </button>
         </TooltipTrigger>
         <TooltipContent>

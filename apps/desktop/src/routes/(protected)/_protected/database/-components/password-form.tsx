@@ -4,13 +4,13 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { DotsBg } from '@fastbase/ui/components/custom/dots-bg'
 import { LoadingContent } from '@fastbase/ui/components/custom/loading-content'
 import { Input } from '@fastbase/ui/components/input'
-import { RiArrowLeftSLine, RiEyeLine, RiEyeOffLine } from '@remixicon/react'
 import { useMutation } from '@tanstack/react-query'
 import { useRouter } from '@tanstack/react-router'
 import { useMemo, useState } from 'react'
 import { toast } from 'sonner'
 import { useUpdateDatabasePassword } from '~/entities/database'
 import { dbTestConnection } from '~/lib/query'
+import { ArrowLeft, Eye, EyeOff } from 'lucide-react'
 
 export function PasswordForm({ database }: { database: Database }) {
   const router = useRouter()
@@ -43,7 +43,7 @@ export function PasswordForm({ database }: { database: Database }) {
             className="px-0! text-muted-foreground"
             onClick={() => router.history.back()}
           >
-            <RiArrowLeftSLine className="size-3" />
+            <ArrowLeft className="size-3" />
             Back
           </Button>
         </div>
@@ -84,10 +84,10 @@ export function PasswordForm({ database }: { database: Database }) {
                   >
                     {showPassword
                       ? (
-                          <RiEyeOffLine className="size-4" />
+                          <EyeOff className="size-4" />
                         )
                       : (
-                          <RiEyeLine className="size-4" />
+                          <Eye className="size-4" />
                         )}
                     <span className="sr-only">
                       {showPassword ? 'Hide password' : 'Show password'}

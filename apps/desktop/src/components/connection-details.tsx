@@ -1,7 +1,7 @@
 import type { DatabaseType } from '@fastbase/shared/enums/database-type'
 import { parseConnectionString } from '@fastbase/shared/utils/connections'
 import { cn } from '@fastbase/ui/lib/utils'
-import { RiEyeLine, RiEyeOffLine } from '@remixicon/react'
+import {Eye, EyeOff} from 'lucide-react'
 import { useState } from 'react'
 
 export function ConnectionDetails({ className, connectionString, type }: { className?: string, connectionString: string, type: DatabaseType }) {
@@ -28,7 +28,7 @@ export function ConnectionDetails({ className, connectionString, type }: { class
                 className="p-1 rounded-md hover:bg-accent translate-y-0.4 cursor-pointer mr-2 inline-block [&_svg]:size-3"
                 onClick={() => setShowPassword(!showPassword)}
               >
-                {showPassword ? <RiEyeOffLine /> : <RiEyeLine />}
+                {showPassword ? <EyeOff /> : <Eye />}
               </button>
               {showPassword ? connection.password : Array.from({ length: connection.password.length }).map(() => '*').join('')}
             </td>

@@ -3,6 +3,7 @@ import { queryOptions, useQuery, useSuspenseQuery } from '@tanstack/react-query'
 import { indexedDb } from '~/lib/indexeddb'
 import { getDatabaseContext } from '../lib'
 
+
 export function databasesQuery() {
   return queryOptions({
     queryKey: ['databases'],

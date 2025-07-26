@@ -2,10 +2,10 @@ import type { WhereFilter } from '~/entities/database'
 import { Button } from '@fastbase/ui/components/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@fastbase/ui/components/popover'
 import { useToggle } from '@fastbase/ui/hookas/use-toggle'
-import { RiAddLine, RiFilterOffLine } from '@remixicon/react'
 import { useStore } from '@tanstack/react-store'
 import { FilterForm, FilterItem } from '~/components/table'
 import { usePageContext } from '..'
+import { Delete, Plus } from 'lucide-react'
 
 export function Filters() {
   const { store } = usePageContext()
@@ -39,10 +39,10 @@ export function Filters() {
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              size="iconXs"
+              className="h-6 w-6 rounded-md"
               onClick={() => toggleForm()}
             >
-              <RiAddLine className="size-4" />
+              <Plus className="size-3.5" />
             </Button>
           </PopoverTrigger>
           <PopoverContent className="p-0">
@@ -60,14 +60,13 @@ export function Filters() {
       </div>
       <Button
         variant="destructive"
-        size="xs"
+        className="h-6 rounded-md"
         onClick={() => store.setState(state => ({
           ...state,
           filters: [],
         }))}
       >
-        <RiFilterOffLine className="size-3" />
-        Clear
+        <Delete className="size-3" />
       </Button>
     </div>
   )

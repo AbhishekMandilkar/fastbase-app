@@ -1,6 +1,13 @@
 {
   "name": "@fastbase/shared",
   "type": "module",
+  "exports": {
+    ".": "./index.ts",
+    "./encryption": "./encryption.ts",
+    "./database": "./database.ts",
+    "./enums/*": "./enums/*.ts",
+    "./utils/*": "./utils/*.ts"
+  },
   "peerDependencies": {
     "@trpc/client": "^11.0.0",
     "permix": "^1.0.4",

@@ -1,21 +1,22 @@
-import type { UseMutateFunction } from '@tanstack/react-query'
-import type { ComponentProps, Dispatch, SetStateAction } from 'react'
-import type { Column } from '../table'
-import type { TableCellProps } from '~/components/table'
-import { getOS } from '@fastbase/shared/utils/os'
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@fastbase/ui/components/alert-dialog'
-import { Button } from '@fastbase/ui/components/button'
-import { Popover, PopoverContent, PopoverTrigger } from '@fastbase/ui/components/popover'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@fastbase/ui/components/tooltip'
-import { copy } from '@fastbase/ui/lib/copy'
-import { cn } from '@fastbase/ui/lib/utils'
-import { RiCollapseDiagonal2Line, RiCommandLine, RiCornerDownLeftLine, RiExpandDiagonal2Line, RiFileCopyLine } from '@remixicon/react'
-import { useMutation } from '@tanstack/react-query'
+import type {UseMutateFunction} from '@tanstack/react-query'
+import type {ComponentProps, Dispatch, SetStateAction} from 'react'
+import type {Column} from '../table'
+import type {TableCellProps} from '~/components/table'
+import {getOS} from '@fastbase/shared/utils/os'
+import {AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger} from '@fastbase/ui/components/alert-dialog'
+import {Button} from '@fastbase/ui/components/button'
+import {Popover, PopoverContent, PopoverTrigger} from '@fastbase/ui/components/popover'
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from '@fastbase/ui/components/tooltip'
+import {copy} from '@fastbase/ui/lib/copy'
+import {cn} from '@fastbase/ui/lib/utils'
+
+import {useMutation} from '@tanstack/react-query'
 import dayjs from 'dayjs'
-import { createContext, use, useEffect, useMemo, useState } from 'react'
-import { toast } from 'sonner'
-import { Monaco } from '~/components/monaco'
-import { sleep } from '~/lib/helpers'
+import {createContext, use, useEffect, useMemo, useState} from 'react'
+import {toast} from 'sonner'
+import {Monaco} from '~/components/monaco'
+import {sleep} from '~/lib/helpers'
+import {Command, Copy, CornerDownLeft, Maximize2, Minimize2, SquareArrowUpRight} from 'lucide-react'
 
 const os = getOS()
 
@@ -33,7 +34,7 @@ interface CellContextValue {
   isJson: boolean
   initialValue: unknown
   displayValue: string
-  update: UseMutateFunction<void, Error, { value: string | null, rowIndex: number }>
+  update: UseMutateFunction<void, Error, {value: string | null, rowIndex: number}>
 }
 
 const CellContext = createContext<CellContextValue>(null!)
@@ -65,8 +66,8 @@ function CellProvider({
   const displayValue = getDisplayValue(initialValue, false)
   const [value, setValue] = useState<string>(() => initialValue === null ? '' : displayValue)
 
-  const { mutate: update } = useMutation({
-    mutationFn: async ({ rowIndex, value }: { value: string | null, rowIndex: number }) => {
+  const {mutate: update} = useMutation({
+    mutationFn: async ({rowIndex, value}: {value: string | null, rowIndex: number}) => {
       if (!onSetValue || !onSaveValue)
         return
 
@@ -125,19 +126,19 @@ function TableCellMonaco({
   onClose: () => void
   hasUpdateFn: boolean
 }) {
-  const { value, initialValue, column, displayValue, isJson, setValue, update } = useCellContext()
+  const {value, initialValue, column, displayValue, isJson, setValue, update} = useCellContext()
 
   const canEdit = !!column?.isEditable && hasUpdateFn
   const canSetNull = !!column?.isNullable && initialValue !== null
   const canSave = value !== displayValue
 
   const setNull = () => {
-    update({ value: null, rowIndex })
+    update({value: null, rowIndex})
     onClose()
   }
 
   const save = (value: string) => {
-    update({ value, rowIndex })
+    update({value, rowIndex})
     onClose()
   }
 
@@ -168,10 +169,10 @@ function TableCellMonaco({
               <TooltipTrigger asChild>
                 <Button
                   variant="outline"
-                  size="iconXs"
+                  size="icon"
                   onClick={() => setIsBig(prev => !prev)}
                 >
-                  {isBig ? <RiCollapseDiagonal2Line className="size-3" /> : <RiExpandDiagonal2Line className="size-3" />}
+                  {isBig ? <Minimize2 className="" /> : <Maximize2 className="" />}
                 </Button>
               </TooltipTrigger>
               <TooltipContent side="bottom">Toggle size</TooltipContent>
@@ -180,8 +181,8 @@ function TableCellMonaco({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button size="iconXs" variant="outline" onClick={() => copy(displayValue)}>
-                  <RiFileCopyLine className="size-3" />
+                <Button size="icon" variant="outline" onClick={() => copy(displayValue)}>
+                  <Copy className="" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent side="bottom">Copy value</TooltipContent>
@@ -195,11 +196,9 @@ function TableCellMonaco({
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <Button
-                      size="xs"
+                      size="sm"
                       variant="secondary"
                     >
-                      Set
-                      {' '}
                       <span className="font-mono">null</span>
                     </Button>
                   </AlertDialogTrigger>
@@ -222,14 +221,14 @@ function TableCellMonaco({
                 </AlertDialog>
               )}
               <Button
-                size="xs"
+                size="sm"
                 disabled={!canSave}
                 onClick={() => save(value)}
               >
                 Save
                 <kbd className="flex items-center text-xs">
-                  {os === 'macos' ? <RiCommandLine className="size-2.5" /> : 'Ctrl'}
-                  <RiCornerDownLeftLine className="size-2.5" />
+                  {os === 'macos' ? <Command className="" /> : 'Ctrl'}
+                  <CornerDownLeft className="" />
                 </kbd>
               </Button>
             </>

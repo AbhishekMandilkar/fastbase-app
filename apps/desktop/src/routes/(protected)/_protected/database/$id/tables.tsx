@@ -35,9 +35,6 @@ function Content({ id }: { id: string }) {
           <div className="text-lg font-medium">
             No table selected
           </div>
-          <p className="text-muted-foreground text-sm max-w-md mx-auto">
-            Select a schema from the dropdown and choose a table from the sidebar to view and manage your data.
-          </p>
         </div>
       </div>
     )
@@ -71,12 +68,12 @@ function DatabaseTablesPage() {
         defaultSize={20}
         minSize={10}
         maxSize={50}
-        className="flex flex-col h-full border bg-background rounded-lg"
+        className="flex flex-col h-full border bg-background"
       >
         <Sidebar database={database} />
       </ResizablePanel>
       <ResizableHandle className="w-1 bg-transparent" />
-      <ResizablePanel defaultSize={80} className="flex-1 border bg-background rounded-lg">
+      <ResizablePanel defaultSize={80} className="flex-1 border bg-background">
         <Content id={id} />
       </ResizablePanel>
     </ResizablePanelGroup>

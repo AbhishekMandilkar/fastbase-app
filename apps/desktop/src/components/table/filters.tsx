@@ -3,8 +3,9 @@ import { Button } from '@fastbase/ui/components/button'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@fastbase/ui/components/command'
 import { Popover, PopoverContent, PopoverTrigger } from '@fastbase/ui/components/popover'
 import { Separator } from '@fastbase/ui/components/separator'
-import { RiCloseLine, RiCornerDownLeftLine, RiDatabase2Line, RiFilterLine } from '@remixicon/react'
+
 import { createContext, use, useEffect, useMemo, useRef, useState } from 'react'
+import {CornerDownLeft, Database, Filter, X} from 'lucide-react'
 
 interface Column {
   name: string
@@ -49,7 +50,7 @@ function FilterColumnSelector({ ref, onSelect }: { ref?: RefObject<HTMLInputElem
               keywords={[column.name, column.type]}
               onSelect={onSelect}
             >
-              <RiDatabase2Line className="size-4 opacity-50" />
+              <Database className="size-4 opacity-50" />
               <span>{column.name}</span>
               <span className="ml-auto text-xs text-muted-foreground">{column.type}</span>
             </CommandItem>
@@ -128,7 +129,7 @@ function FilterOperatorSelector({
                 keywords={[operator.label, operator.value]}
                 onSelect={onSelect}
               >
-                <RiFilterLine className="size-4 opacity-50" />
+                <Filter className="size-4 opacity-50" />
                 <span>{operator.label}</span>
                 <span className="ml-auto text-xs text-muted-foreground">{operator.value}</span>
               </CommandItem>
@@ -224,10 +225,10 @@ function FilterValueSelector({
         <div className="p-2 border-t flex justify-end">
           <Button
             onClick={onApply}
-            size="xs"
+            size="sm"
           >
             Apply Filter
-            <RiCornerDownLeftLine className="size-3" />
+            <CornerDownLeft className="size-3" />
           </Button>
         </div>
       </div>
@@ -255,7 +256,7 @@ export function FilterItem({
     <div className="flex items-center border rounded-sm overflow-hidden h-6 bg-input/30">
       <Popover>
         <PopoverTrigger className="text-xs flex items-center gap-1 px-2 h-full hover:bg-accent/50 transition-colors font-medium">
-          <RiDatabase2Line className="size-3 text-primary/70" />
+          <Database className="size-3 text-primary/70" />
           {filter.column}
         </PopoverTrigger>
         <PopoverContent className="p-0 shadow-md">
@@ -304,7 +305,7 @@ export function FilterItem({
         onClick={onRemove}
         aria-label="Remove filter"
       >
-        <RiCloseLine className="size-3.5" />
+        <X className="size-3.5" />
       </button>
     </div>
   )

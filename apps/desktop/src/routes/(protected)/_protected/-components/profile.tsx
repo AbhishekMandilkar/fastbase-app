@@ -2,7 +2,8 @@ import { Button } from '@fastbase/ui/components/button'
 import { LoadingContent } from '@fastbase/ui/components/custom/loading-content'
 import { Skeleton } from '@fastbase/ui/components/skeleton'
 import { cn } from '@fastbase/ui/lib/utils'
-import { RiLogoutBoxLine } from '@remixicon/react'
+import {LogOutIcon} from 'lucide-react'
+
 import { UserAvatar, useSignOut } from '~/entities/user'
 
 export function Profile({ className }: { className?: string }) {
@@ -37,7 +38,7 @@ export function Profile({ className }: { className?: string }) {
         disabled={isSigningOut}
       >
         <LoadingContent loading={isSigningOut}>
-          <RiLogoutBoxLine />
+          <LogOutIcon />
           Sign out
         </LoadingContent>
       </Button>

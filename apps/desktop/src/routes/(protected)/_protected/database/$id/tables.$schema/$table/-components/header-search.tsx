@@ -3,7 +3,6 @@ import { Button } from '@fastbase/ui/components/button'
 import { ContentSwitch } from '@fastbase/ui/components/custom/content-switch'
 import { LoadingContent } from '@fastbase/ui/components/custom/loading-content'
 import { Input } from '@fastbase/ui/components/input'
-import { RiBardLine, RiCheckLine, RiSendPlaneLine } from '@remixicon/react'
 import { useMutation } from '@tanstack/react-query'
 import { useStore } from '@tanstack/react-store'
 import { useMemo } from 'react'
@@ -12,6 +11,8 @@ import { useDatabase, useDatabaseEnums } from '~/entities/database'
 import { trpc } from '~/lib/trpc'
 import { Route, usePageContext } from '..'
 import { useColumnsQuery } from '../-queries/use-columns-query'
+import { Check, Sparkles } from 'lucide-react'
+import { Send } from 'lucide-react'
 
 export function HeaderSearch() {
   const { id, table, schema } = Route.useParams()
@@ -58,7 +59,7 @@ export function HeaderSearch() {
         generateFilter({ prompt, context })
       }}
     >
-      <RiBardLine className="size-4 absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+      <Sparkles className="size-4 absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
       <Input
         className="pl-8 pr-10 w-full focus-visible:ring-0 focus-visible:border"
         placeholder="Ask AI to filter data..."
@@ -68,17 +69,17 @@ export function HeaderSearch() {
       />
       <Button
         type="submit"
-        variant="secondary"
-        size="iconXs"
+        variant="ghost"
+        size="icon"
         disabled={isPending}
         className="absolute right-2 top-1/2 -translate-y-1/2"
       >
         <LoadingContent loading={isPending} loaderClassName="size-3">
           <ContentSwitch
-            activeContent={<RiCheckLine className="size-3 text-success" />}
+            activeContent={<Check className="size-3 text-success" />}
             active={!isPending}
           >
-            <RiSendPlaneLine className="size-3" />
+            <Send className="size-3" />
           </ContentSwitch>
         </LoadingContent>
       </Button>

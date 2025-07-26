@@ -4,10 +4,10 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Indicator } from '@fastbase/ui/components/custom/indicator'
 import { Popover, PopoverContent, PopoverTrigger } from '@fastbase/ui/components/popover'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@fastbase/ui/components/tooltip'
-import { RiCheckLine, RiDatabase2Line, RiLayoutColumnLine } from '@remixicon/react'
 import { useStore } from '@tanstack/react-store'
 import { usePageContext } from '..'
 import { useColumnsQuery } from '../-queries/use-columns-query'
+import {Check, Columns2, DatabaseIcon} from 'lucide-react'
 
 export function HeaderActionsColumns({ database, table, schema }: { database: Database, table: string, schema: string }) {
   const { store } = usePageContext()
@@ -22,7 +22,7 @@ export function HeaderActionsColumns({ database, table, schema }: { database: Da
             <TooltipTrigger asChild>
               <PopoverTrigger asChild>
                 <Button size="icon" variant="outline">
-                  <RiLayoutColumnLine />
+                  <Columns2 />
                 </Button>
               </PopoverTrigger>
             </TooltipTrigger>
@@ -47,9 +47,9 @@ export function HeaderActionsColumns({ database, table, schema }: { database: Da
                 }))}
               >
                 <span className="size-4">
-                  {hiddenColumns.length === 0 && <RiCheckLine className="size-4 opacity-50" />}
+                  {hiddenColumns.length === 0 && <Check className="size-4 opacity-50" />}
                 </span>
-                <RiLayoutColumnLine className="size-4 opacity-50" />
+                <Columns2 className="size-4 opacity-50" />
                 <span>{hiddenColumns.length === 0 ? 'Hide all columns' : 'Show all columns'}</span>
               </CommandItem>
             </CommandGroup>
@@ -68,9 +68,9 @@ export function HeaderActionsColumns({ database, table, schema }: { database: Da
                   }))}
                 >
                   <span className="size-4 shrink-0">
-                    {!hiddenColumns.includes(column.name) && <RiCheckLine className="size-4 opacity-50" />}
+                    {!hiddenColumns.includes(column.name) && <Check className="size-4 opacity-50" />}
                   </span>
-                  <RiDatabase2Line className="size-4 opacity-50 shrink-0" />
+                  <DatabaseIcon className="size-4 opacity-50 shrink-0" />
                   <span className="truncate">{column.name}</span>
                 </CommandItem>
               ))}

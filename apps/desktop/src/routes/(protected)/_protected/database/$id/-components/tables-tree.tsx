@@ -5,12 +5,13 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@fastb
 import { useDebouncedCallback } from '@fastbase/ui/hookas/use-debounced-callback'
 import { useSessionStorage } from '@fastbase/ui/hookas/use-session-storage'
 import { clickHandlers, cn } from '@fastbase/ui/lib/utils'
-import { RiStackLine, RiTableLine } from '@remixicon/react'
+
 import { Link, useNavigate, useParams } from '@tanstack/react-router'
 import { AnimatePresence, motion } from 'motion/react'
 import { useMemo, useRef } from 'react'
 import { prefetchDatabaseTableCore, useDatabaseTablesAndSchemas } from '~/entities/database'
 import { getTableStoreState } from '../tables.$schema/$table'
+import { SquareStack, TableIcon } from 'lucide-react'
 
 export function TablesTree({ database, className, search }: { database: Database, className?: string, search?: string }) {
   const { data: tablesAndSchemas, isPending } = useDatabaseTablesAndSchemas(database)
@@ -80,7 +81,7 @@ export function TablesTree({ database, className, search }: { database: Database
           : filteredTablesAndSchemas.length === 0
             ? (
                 <div className="flex-1 flex flex-col items-center justify-center py-8 text-center h-full">
-                  <RiTableLine className="h-10 w-10 text-muted-foreground mb-2" />
+                  <TableIcon className="h-10 w-10 text-muted-foreground mb-2" />
                   <p className="text-sm text-muted-foreground">No tables found</p>
                 </div>
               )
@@ -103,7 +104,7 @@ export function TablesTree({ database, className, search }: { database: Database
                             <TooltipProvider>
                               <Tooltip>
                                 <TooltipTrigger asChild>
-                                  <RiStackLine
+                                  <SquareStack
                                     className={cn(
                                       'size-4 text-muted-foreground shrink-0 opacity-50',
                                       schemaParam === schema.name && 'text-primary opacity-100',
@@ -149,7 +150,7 @@ export function TablesTree({ database, className, search }: { database: Database
                                   )}
                                   onMouseOver={() => debouncedPrefetchDatabaseTableCore(schema.name, table)}
                                 >
-                                  <RiTableLine
+                                  <TableIcon
                                     className={cn(
                                       'size-4 text-muted-foreground shrink-0 opacity-50',
                                       tableParam === table && 'text-primary opacity-100',

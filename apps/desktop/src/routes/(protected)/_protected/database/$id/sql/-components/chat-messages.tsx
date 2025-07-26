@@ -8,7 +8,6 @@ import { useAsyncEffect } from '@conar/ui/hookas/use-async-effect'
 import { useMountedEffect } from '@conar/ui/hookas/use-mounted-effect'
 import { copy } from '@conar/ui/lib/copy'
 import { cn } from '@conar/ui/lib/utils'
-import { RiFileCopyLine, RiRefreshLine, RiRestartLine } from '@remixicon/react'
 import { Fragment, useRef } from 'react'
 import { Markdown } from '~/components/markdown'
 import { UserAvatar } from '~/entities/user'
@@ -16,6 +15,7 @@ import { sleep } from '~/lib/helpers'
 import { pageHooks, pageStore, Route } from '..'
 import { chatMessages } from '../-lib'
 import { ChatImages } from './chat-images'
+import {Copy, RefreshCcw, RotateCcw, Terminal} from 'lucide-react'
 
 interface attachment {
   name?: string
@@ -50,12 +50,12 @@ function UserMessage({ text, attachments, className, ...props }: { text: string,
             <TooltipTrigger asChild>
               <Button
                 variant="ghost"
-                size="iconXs"
+                size="icon"
                 onClick={() => {
                   copy(text, 'Message copied to clipboard')
                 }}
               >
-                <RiFileCopyLine className="size-3.5 text-muted-foreground" />
+                <Copy className="size-3.5 text-muted-foreground" />
               </Button>
             </TooltipTrigger>
             <TooltipContent>Copy message</TooltipContent>
@@ -111,10 +111,10 @@ function AssistantMessage({
               <TooltipTrigger asChild>
                 <Button
                   variant="ghost"
-                  size="iconXs"
+                  size="icon"
                   onClick={onReload}
                 >
-                  <RiRestartLine className="size-3.5 text-muted-foreground" />
+                  <RotateCcw className="size-3.5 text-muted-foreground" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>Regenerate</TooltipContent>
@@ -126,12 +126,12 @@ function AssistantMessage({
             <TooltipTrigger asChild>
               <Button
                 variant="ghost"
-                size="iconXs"
+                size="icon"
                 onClick={() => {
                   copy(text, 'Message copied to clipboard')
                 }}
               >
-                <RiFileCopyLine className="size-3.5 text-muted-foreground" />
+                <Copy className="size-3.5 text-muted-foreground" />
               </Button>
             </TooltipTrigger>
             <TooltipContent>Copy message</TooltipContent>
@@ -148,8 +148,8 @@ function ErrorMessage({ error, onReload, ...props }: { error: Error, onReload: (
       <AssistantAvatar />
       <p className="text-red-500">{error.message}</p>
       <div>
-        <Button variant="outline" size="xs" onClick={onReload}>
-          <RiRefreshLine className="size-3" />
+        <Button variant="outline" size="sm" onClick={onReload}>
+          <RefreshCcw className="size-3" />
           Try again
         </Button>
       </div>

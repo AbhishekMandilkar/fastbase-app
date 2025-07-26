@@ -3,7 +3,7 @@ import { Button } from '@fastbase/ui/components/button'
 import { ContentSwitch } from '@fastbase/ui/components/custom/content-switch'
 import { LoadingContent } from '@fastbase/ui/components/custom/loading-content'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@fastbase/ui/components/tooltip'
-import { RiCheckLine, RiLoopLeftLine } from '@remixicon/react'
+
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { databaseColumnsQuery } from '~/entities/database'
 import { queryClient } from '~/main'
@@ -12,6 +12,7 @@ import { useRowsQueryOpts } from '../-queries/use-rows-query-opts'
 import { HeaderActionsColumns } from './header-actions-columns'
 import { HeaderActionsDelete } from './header-actions-delete'
 import { HeaderActionsFilters } from './header-actions-filters'
+import {Check, RotateCcw} from 'lucide-react'
 
 export function HeaderActions({ table, schema, database }: { table: string, schema: string, database: Database }) {
   const { store } = usePageContext()
@@ -53,10 +54,10 @@ export function HeaderActions({ table, schema, database }: { table: string, sche
             >
               <LoadingContent loading={isFetching}>
                 <ContentSwitch
-                  activeContent={<RiCheckLine className="text-success" />}
+                  activeContent={<Check className="text-success" />}
                   active={isFetching}
                 >
-                  <RiLoopLeftLine />
+                  <RotateCcw />
                 </ContentSwitch>
               </LoadingContent>
             </Button>

@@ -9,7 +9,6 @@ import { cn } from '@fastbase/ui/lib/utils'
 import { createContext, useContextSelector } from '@fluentui/react-context-selector'
 import NumberFlow from '@number-flow/react'
 import * as AccordionPrimitive from '@radix-ui/react-accordion'
-import { RiArrowRightDoubleLine, RiArrowRightSLine, RiFileCopyLine } from '@remixicon/react'
 import { marked } from 'marked'
 import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useMemo, useState } from 'react'
@@ -18,6 +17,7 @@ import remarkGfm from 'remark-gfm'
 import { toast } from 'sonner'
 import { trackEvent } from '~/lib/events'
 import { Monaco } from './monaco'
+import {ArrowRight, Copy, SquareArrowUpRight} from 'lucide-react'
 
 const langsMap: Record<string, string> = {
   text: 'Text',
@@ -95,11 +95,11 @@ function Pre({ children, onEdit }: { children?: ReactNode, onEdit?: (content: st
               <div className="flex items-center gap-2">
                 <div className="flex items-center gap-1">
                   <Button
-                    size="iconXs"
+                    size="icon"
                     variant="ghost"
                     className="w-5"
                   >
-                    <RiArrowRightSLine className={cn('size-4 duration-150', opened === 'pre' && 'rotate-90')} />
+                    <ArrowRight className={cn('size-4 duration-150', opened === 'pre' && 'rotate-90')} />
                   </Button>
                   <span className="font-medium">
                     {langsMap[lang as keyof typeof langsMap] || lang}
@@ -132,7 +132,7 @@ function Pre({ children, onEdit }: { children?: ReactNode, onEdit?: (content: st
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button
-                        size="iconXs"
+                        size="icon"
                         variant="ghost"
                         onClick={(e) => {
                           e.stopPropagation()
@@ -140,7 +140,7 @@ function Pre({ children, onEdit }: { children?: ReactNode, onEdit?: (content: st
                           trackEvent('markdown_copy_to_clipboard')
                         }}
                       >
-                        <RiFileCopyLine className="size-3.5" />
+                        <Copy className="size-3.5" />
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -153,7 +153,7 @@ function Pre({ children, onEdit }: { children?: ReactNode, onEdit?: (content: st
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Button
-                          size="iconXs"
+                          size="icon"
                           variant="ghost"
                           disabled={isPreLoading}
                           onClick={(e) => {
@@ -163,7 +163,7 @@ function Pre({ children, onEdit }: { children?: ReactNode, onEdit?: (content: st
                             trackEvent('markdown_move_to_runner')
                           }}
                         >
-                          <RiArrowRightDoubleLine className="size-3.5" />
+                          <SquareArrowUpRight className="size-3.5" />
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent>

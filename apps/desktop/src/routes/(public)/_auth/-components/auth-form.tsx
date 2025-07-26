@@ -7,7 +7,6 @@ import { Separator } from '@fastbase/ui/components/separator'
 import { useAsyncEffect } from '@fastbase/ui/hookas/use-async-effect'
 import { copy } from '@fastbase/ui/lib/copy'
 import { arktypeResolver } from '@hookform/resolvers/arktype'
-import { RiEyeLine, RiEyeOffLine, RiGithubFill, RiGoogleFill } from '@remixicon/react'
 import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { type } from 'arktype'
@@ -19,6 +18,7 @@ import { authClient, bearerToken, codeChallenge, successAuthToast } from '~/lib/
 import { handleDeepLink } from '~/lib/deep-links'
 import { encrypt } from '~/lib/encryption'
 import { handleError } from '~/lib/error'
+import { Eye, EyeOff } from 'lucide-react'
 
 type Type = 'sign-up' | 'sign-in'
 
@@ -104,9 +104,7 @@ function SocialAuthForm({ type }: { type: Type }) {
           disabled={isGoogleSignInPending || isGithubSignInPending}
         >
           <LoadingContent loading={isGoogleSignInPending}>
-            <RiGoogleFill className="size-4" />
             {type === 'sign-up' ? 'Sign up' : 'Sign in'}
-            {' '}
             with Google
           </LoadingContent>
         </Button>
@@ -117,7 +115,6 @@ function SocialAuthForm({ type }: { type: Type }) {
           onClick={() => githubSignIn()}
         >
           <LoadingContent loading={isGithubSignInPending}>
-            <RiGithubFill className="size-4" />
             {type === 'sign-up' ? 'Sign up' : 'Sign in'}
             {' '}
             with GitHub
@@ -311,10 +308,10 @@ export function AuthForm({ type }: { type: Type }) {
                     >
                       {showPassword
                         ? (
-                            <RiEyeOffLine className="size-4" />
+                            <EyeOff className="size-4" />
                           )
                         : (
-                            <RiEyeLine className="size-4" />
+                            <Eye className="size-4" />
                           )}
                       <span className="sr-only">
                         {showPassword ? 'Hide password' : 'Show password'}

@@ -15,11 +15,11 @@ import { restrictToHorizontalAxis } from '@dnd-kit/modifiers'
 import { arrayMove, horizontalListSortingStrategy, SortableContext, useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { useKeyboardEvent } from '@react-hookz/web'
-import { RiCloseLine, RiTableLine } from '@remixicon/react'
 import { useParams, useRouter } from '@tanstack/react-router'
 import { useEffect, useMemo, useRef } from 'react'
 import { prefetchDatabaseTableCore } from '~/entities/database'
 import { getTableStoreState } from '../tables.$schema/$table'
+import {Table, X} from 'lucide-react'
 
 interface Tab {
   table: string
@@ -34,7 +34,7 @@ function CloseButton({ onClick }: { onClick: (e: React.MouseEvent<SVGSVGElement>
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <RiCloseLine
+          <X
             className="size-3.5 opacity-0 group-hover:opacity-30 hover:opacity-100"
             onClick={onClick}
           />
@@ -72,7 +72,7 @@ function TabButton({
       )}
       {...props}
     >
-      <RiTableLine
+      <Table
         className={cn(
           'size-4 text-muted-foreground shrink-0 opacity-50',
           active && 'text-primary opacity-100',
@@ -302,7 +302,7 @@ export function TablesTabs({ ref, database, id }: {
   return (
     <DndContext modifiers={[restrictToHorizontalAxis]} sensors={sensors} onDragEnd={handleDragEnd}>
       <SortableContext items={tabItems} strategy={horizontalListSortingStrategy}>
-        <ScrollArea ref={scrollRef} className="flex h-9 p-1 gap-1 overflow-x-auto">
+        <ScrollArea ref={scrollRef} className="flex h-9 p-1 px-2 gap-1 overflow-x-auto">
           {tabItems.map(item => (
             <SortableTab
               key={item.id}

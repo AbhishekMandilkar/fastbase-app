@@ -1,10 +1,10 @@
 import type { ComponentProps } from 'react'
 import type { TableCellProps, TableHeaderCellProps } from '~/components/table'
 import { cn } from '@fastbase/ui/lib/utils'
-import { RiCheckLine, RiSubtractLine } from '@remixicon/react'
 import { useStore } from '@tanstack/react-store'
 import { useTableContext } from '~/components/table'
 import { usePageContext } from '..'
+import {Check, Minus} from 'lucide-react'
 
 function IndeterminateCheckbox({
   indeterminate,
@@ -24,12 +24,12 @@ function IndeterminateCheckbox({
         )}
         {...props}
       />
-      <RiCheckLine
+      <Check
         className={cn(
           'absolute size-3 text-primary-foreground opacity-0 pointer-events-none peer-checked:opacity-100 transition-opacity duration-100',
         )}
       />
-      <RiSubtractLine
+      <Minus
         className="absolute size-3 text-primary-foreground opacity-0 pointer-events-none transition-opacity duration-100"
         style={{ opacity: !props.checked && indeterminate ? 1 : 0 }}
       />

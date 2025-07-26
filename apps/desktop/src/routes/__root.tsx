@@ -41,14 +41,13 @@ function RootDocument() {
     const preloader = document.getElementById('preloader')
     const root = document.getElementById('root')!
 
-    sleep(100).then(() => {
+    sleep(1000).then(() => {
       root.classList.remove('scale-[1.2]', 'opacity-0')
       document.body.classList.remove('overflow-hidden')
     })
 
     if (preloader) {
-      preloader.classList.add('scale-[0.6]', 'opacity-0', 'animate-spin')
-      sleep(500).then(() => preloader.remove())
+      sleep(1000).then(() => preloader.remove())
     }
   }, [isPending])
 

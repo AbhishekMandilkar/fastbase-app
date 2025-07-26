@@ -4,20 +4,18 @@ import {Button} from '@fastbase/ui/components/button'
 import {LoadingContent} from '@fastbase/ui/components/custom/loading-content'
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from '@fastbase/ui/components/dropdown-menu'
 import {Skeleton} from '@fastbase/ui/components/skeleton'
-import {RiDeleteBinLine, RiMoonLine, RiMoreLine} from '@remixicon/react'
 import {useMutation} from '@tanstack/react-query'
-import {Link, useRouter} from '@tanstack/react-router'
+import {Link} from '@tanstack/react-router'
 import {useMemo, useState} from 'react'
 import {toast} from 'sonner'
 import {DatabaseIcon, databasesQuery, prefetchDatabaseCore, removeDatabase, useDatabases} from '~/entities/database'
 import {queryClient} from '~/main'
-import {Sidebar, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarFooter, SidebarGroup, SidebarContent} from '@fastbase/ui/components/sidebar'
+import {Sidebar, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarFooter, SidebarGroup, SidebarContent, SidebarGroupContent, SidebarGroupLabel} from '@fastbase/ui/components/sidebar'
 import {Separator} from '@fastbase/ui/components/separator'
-import {AppLogoSquare} from '@fastbase/ui/components/brand/app-logo-square'
 import {UpdatesObserver} from '~/updates-observer'
-import {AppLogo} from '@fastbase/ui/components/brand/app-logo'
 import Brand from '@fastbase/ui/components/brand/brand'
 import {ThemeToggle} from '~/components/theme-toggle'
+import {EllipsisVertical, Moon, Trash} from 'lucide-react'
 
 function DatabaseCard({database, onRemove}: {database: Database, onRemove: () => void}) {
   const connectionString = useMemo(() => {
@@ -31,37 +29,34 @@ function DatabaseCard({database, onRemove}: {database: Database, onRemove: () =>
   }, [database.connectionString])
 
   return (
-    <Link
-      className="relative flex items-center justify-between gap-4 rounded-lg bg-card p-5 border hover:border-primary transition-all duration-150 hover:shadow-lg shadow-black/3"
-      to="/database/$id/sql"
-      params={{id: database.id}}
+    <SidebarMenuButton
       onMouseOver={() => prefetchDatabaseCore(database)}
+      asChild
     >
-      <div className="size-12 shrink-0 rounded-full bg-muted/50 p-3">
-        <DatabaseIcon type={database.type} className="size-full text-primary" />
-      </div>
-      <div className="flex flex-1 flex-col gap-1 min-w-0">
-        <div className="font-medium tracking-tight truncate">{database.name}</div>
-        <div data-mask className="text-sm text-muted-foreground truncate">{connectionString.replaceAll('*', '•')}</div>
-      </div>
-      <DropdownMenu>
-        <DropdownMenuTrigger className="rounded-md p-2 hover:bg-accent-foreground/5">
-          <RiMoreLine className="size-4" />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem
-            className="text-destructive focus:text-destructive"
-            onClick={(e) => {
-              e.preventDefault()
-              onRemove()
-            }}
-          >
-            <RiDeleteBinLine className="mr-2 size-4" />
-            Remove
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </Link>
+      <Link to="/database/$id/sql" params={{id: database.id}}>
+        <DatabaseIcon type={database.type} className="size-4 text-primary" />
+        <div className="flex flex-1 flex-col min-w-0">
+          <span className="font-medium tracking-tight truncate">{database.name}</span>
+        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger className="">
+            <EllipsisVertical className="size-4" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem
+              className="text-destructive focus:text-destructive"
+              onClick={(e) => {
+                e.preventDefault()
+                onRemove()
+              }}
+            >
+              <Trash className="mr-2 size-4" />
+              Remove
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </Link>
+    </SidebarMenuButton>
   )
 }
 
@@ -76,13 +71,10 @@ export function Empty() {
 
 function DatabaseCardSkeleton() {
   return (
-    <div className="relative flex items-center justify-between gap-4 rounded-lg bg-card p-5">
-      <Skeleton className="size-14 shrink-0 rounded-full" />
-      <div className="flex flex-1 flex-col gap-2 min-w-0">
-        <Skeleton className="h-5 w-1/3" />
-        <Skeleton className="h-4 w-2/3" />
-      </div>
-    </div>
+    <SidebarMenuButton>
+      <Skeleton className="size-4 shrink-0 rounded-full" />
+      <Skeleton className="h-4 w-2/3" />
+    </SidebarMenuButton>
   )
 }
 
@@ -137,23 +129,13 @@ export function DatabasesList({sidebarProps}: {sidebarProps?: React.ComponentPro
   const [isRemoveDialogOpen, setIsRemoveDialogOpen] = useState(false)
 
   return (
-    <div className="flex flex-col gap-6">
       <Sidebar {...sidebarProps}>
-        <SidebarHeader>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton size="lg" asChild>
-                <Brand  />
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarHeader>
-        <Separator />
         <SidebarContent>
           <SidebarGroup>
-            <SidebarMenu className="gap-2">
+          <SidebarGroupLabel>Databases</SidebarGroupLabel>
+            <SidebarMenu>
               <RemoveDatabaseDialog id={selected} open={isRemoveDialogOpen} onOpenChange={setIsRemoveDialogOpen} />
-              <div className="flex flex-col gap-2">
+              <SidebarGroupContent>
                 {isPending
                   ? (
                     <>
@@ -174,7 +156,7 @@ export function DatabasesList({sidebarProps}: {sidebarProps?: React.ComponentPro
                       />
                     ))
                     : <Empty />}
-              </div>
+              </SidebarGroupContent>
             </SidebarMenu>
           </SidebarGroup>
         </SidebarContent>
@@ -183,12 +165,11 @@ export function DatabasesList({sidebarProps}: {sidebarProps?: React.ComponentPro
             <UpdatesObserver />
             <ThemeToggle>
               <Button variant="ghost" size="icon">
-                <RiMoonLine className="size-4" />
+                <Moon className="size-4" />
               </Button>
             </ThemeToggle>
           </div>
         </SidebarFooter>
       </Sidebar>
-    </div>
   )
 }

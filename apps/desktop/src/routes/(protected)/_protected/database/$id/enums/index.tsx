@@ -4,9 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@fastbase/ui/component
 import { ScrollArea } from '@fastbase/ui/components/custom/scroll-area'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@fastbase/ui/components/select'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@fastbase/ui/components/tooltip'
-import { RiInformationLine, RiListUnordered } from '@remixicon/react'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
+import {Info, List, ListOrdered} from 'lucide-react'
 import { useState } from 'react'
 import { databaseTablesAndSchemasQuery, useDatabaseEnums } from '~/entities/database'
 
@@ -73,7 +73,7 @@ function DatabaseEnumsPage() {
                     <CardHeader className="py-3 px-4 bg-muted/50">
                       <div className="flex justify-between items-center">
                         <div className="flex items-center gap-2">
-                          <RiListUnordered className="text-primary size-4" />
+                          <List className="text-primary size-4" />
                           <CardTitle className="text-base font-medium">{enumItem.name}</CardTitle>
                           <TooltipProvider>
                             <Tooltip>
@@ -116,7 +116,7 @@ function DatabaseEnumsPage() {
           : (
               <Card className="w-full mt-4 border border-dashed border-muted-foreground/20 bg-muted/10">
                 <CardContent className="flex flex-col items-center justify-center p-10 text-center">
-                  <RiInformationLine className="size-12 mx-auto mb-3 text-muted-foreground" />
+                  <Info className="size-12 mx-auto mb-3 text-muted-foreground" />
                   <h3 className="text-lg font-medium text-foreground">No enums found</h3>
                   <p className="text-muted-foreground text-sm max-w-md">
                     This schema doesn't have any enums defined yet.

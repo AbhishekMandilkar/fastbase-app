@@ -1,6 +1,6 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@fastbase/ui/components/dropdown-menu'
 import { useTheme } from '@fastbase/ui/theme-provider'
-import { RiComputerLine, RiMoonLine, RiSunLine } from '@remixicon/react'
+import {Moon, SquareArrowUpRight, Sun} from 'lucide-react'
 
 export function ThemeToggle({ children }: { children: React.ReactNode }) {
   const { setTheme } = useTheme()
@@ -12,15 +12,15 @@ export function ThemeToggle({ children }: { children: React.ReactNode }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent side="right" className="min-w-32">
         <DropdownMenuItem onClick={() => setTheme('light')}>
-          <RiSunLine aria-hidden="true" />
+          <Sun aria-hidden="true" />
           Light
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme('dark')}>
-          <RiMoonLine aria-hidden="true" />
+          <Moon aria-hidden="true" />
           Dark
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme('system')}>
-          <RiComputerLine aria-hidden="true" />
+          <SquareArrowUpRight aria-hidden="true" />
           System
         </DropdownMenuItem>
       </DropdownMenuContent>

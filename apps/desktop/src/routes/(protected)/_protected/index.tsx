@@ -8,12 +8,9 @@ import {SidebarInset, SidebarProvider, SidebarTrigger} from '@fastbase/ui/compon
 const CreateConnectionPage = () => {
   return (
     <SidebarProvider>
-      <DatabasesList sidebarProps={{
-        variant: 'inset',
-        collapsible: 'offcanvas',
-      }} />
+      <DatabasesList />
       <SidebarInset>
-      <SidebarTrigger className="-ml-1" />
+      <SidebarTrigger className="m-2" />
         <CreateConnection />
       </SidebarInset>
     </SidebarProvider>

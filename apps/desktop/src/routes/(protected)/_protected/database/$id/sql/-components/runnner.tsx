@@ -15,7 +15,6 @@ import { copy } from '@conar/ui/lib/copy'
 import { cn } from '@conar/ui/lib/utils'
 import NumberFlow from '@number-flow/react'
 import { useKeyboardEvent } from '@react-hookz/web'
-import { RiAlertLine, RiArrowUpLine, RiBrush2Line, RiCloseLine, RiCommandLine, RiCornerDownLeftLine, RiDeleteBin5Line, RiFileCopyLine, RiLoader4Line, RiSearchLine } from '@remixicon/react'
 import { useQuery } from '@tanstack/react-query'
 import { useStore } from '@tanstack/react-store'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -28,6 +27,7 @@ import { formatSql } from '~/lib/formatter'
 import { dbQuery } from '~/lib/query'
 import { pageHooks, pageStore, Route } from '..'
 import { chatQuery } from '../-lib'
+import {ArrowUp, Brush, Command, Copy, CornerDownLeft, Loader2, SearchIcon, Terminal, Trash2, TriangleAlert, X} from 'lucide-react'
 
 const os = getOS()
 
@@ -48,7 +48,7 @@ function DangerousSqlAlert({ open, setOpen, confirm, query }: { open: boolean, s
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle className="flex items-center gap-2">
-            <RiAlertLine className="size-5 text-warning" />
+            <TriangleAlert className="size-5 text-destructive" />
             Potentially Dangerous SQL Query
           </AlertDialogTitle>
           <AlertDialogDescription>
@@ -66,13 +66,13 @@ function DangerousSqlAlert({ open, setOpen, confirm, query }: { open: boolean, s
         </AlertDialogHeader>
         <AlertDialogFooter className="gap-2">
           <AlertDialogCancel className="border-muted-foreground/20">Cancel</AlertDialogCancel>
-          <AlertDialogAction variant="warning" onClick={confirm}>
+          <AlertDialogAction onClick={confirm}>
             <span className="flex items-center gap-2">
               Run Anyway
               <kbd className="flex items-center">
-                {os === 'macos' ? <RiCommandLine className="size-3" /> : 'Ctrl'}
-                <RiArrowUpLine className="size-3" />
-                <RiCornerDownLeftLine className="size-3" />
+                {os === 'macos' ? <Terminal className="size-3" /> : 'Ctrl'}
+                <ArrowUp className="size-3" />
+                <CornerDownLeft className="size-3" />
               </kbd>
             </span>
           </AlertDialogAction>
@@ -146,10 +146,10 @@ function ResultTable({
             onChange={e => setSearch(e.target.value)}
             className="w-full pl-7 pr-8 h-8 text-sm"
           />
-          <RiSearchLine className="absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground size-3.5" />
+          <SearchIcon className="absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground size-3.5" />
           {search && (
-            <Button variant="ghost" size="iconXs" className="absolute right-1.5 top-1/2 -translate-y-1/2" onClick={() => setSearch('')}>
-              <RiCloseLine className="size-4" />
+            <Button variant="ghost" size="icon" className="absolute right-1.5 top-1/2 -translate-y-1/2" onClick={() => setSearch('')}>
+              <X className="size-4" />
             </Button>
           )}
         </div>
@@ -275,7 +275,7 @@ export function Runner() {
                     query: '',
                   }))}
                 >
-                  <RiDeleteBin5Line />
+                  <Trash2 />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
@@ -291,7 +291,7 @@ export function Runner() {
                   size="icon"
                   onClick={() => copy(query)}
                 >
-                  <RiFileCopyLine />
+                  <Copy />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
@@ -307,7 +307,7 @@ export function Runner() {
                   size="icon"
                   onClick={() => format()}
                 >
-                  <RiBrush2Line />
+                  <Brush />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
@@ -319,12 +319,11 @@ export function Runner() {
             disabled={queryStatus === 'fetching'}
             onClick={() => sendQuery(query)}
           >
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-2">
               Run
-              {' '}
-              <kbd className="flex items-center text-xs">
-                {os === 'macos' ? <RiCommandLine className="size-3" /> : 'Ctrl'}
-                <RiCornerDownLeftLine className="size-3" />
+              <kbd className="flex items-center text-xs gap-2">
+                {os === 'macos' ? <Command className="size-3" /> : 'Ctrl'}
+                <CornerDownLeft className="size-3" />
               </kbd>
             </div>
           </Button>
@@ -361,7 +360,7 @@ export function Runner() {
         {queryStatus === 'fetching'
           ? (
               <div className="h-full flex flex-col items-center justify-center">
-                <RiLoader4Line className="size-6 text-muted-foreground mb-2 animate-spin" />
+                <Loader2 className="size-6 text-muted-foreground mb-2 animate-spin" />
                 <p className="text-sm text-center">
                   Running query...
                 </p>

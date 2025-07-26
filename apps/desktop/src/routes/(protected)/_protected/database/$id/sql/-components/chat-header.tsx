@@ -2,7 +2,7 @@ import type { UseChatHelpers } from '@ai-sdk/react'
 import { Button } from '@conar/ui/components/button'
 import { CardTitle } from '@conar/ui/components/card'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@conar/ui/components/tooltip'
-import { RiDeleteBinLine } from '@remixicon/react'
+import {Trash} from 'lucide-react'
 
 export function ChatHeader({
   messages,
@@ -11,7 +11,7 @@ export function ChatHeader({
   return (
     <div className="flex justify-between items-center h-8">
       <CardTitle className="flex items-center gap-2">
-        AI Assistant
+        Chat to SQL
       </CardTitle>
       {messages.length > 0 && (
         <TooltipProvider>
@@ -22,7 +22,7 @@ export function ChatHeader({
                 size="icon"
                 onClick={() => setMessages([])}
               >
-                <RiDeleteBinLine className="size-4" />
+                <Trash className="size-4" />
               </Button>
             </TooltipTrigger>
             <TooltipContent>

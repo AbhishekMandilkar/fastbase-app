@@ -2,10 +2,10 @@ import type { WhereFilter } from '~/entities/database'
 import { Button } from '@fastbase/ui/components/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@fastbase/ui/components/popover'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@fastbase/ui/components/tooltip'
-import { RiFilterLine } from '@remixicon/react'
 import { useState } from 'react'
 import { FilterForm } from '~/components/table'
 import { usePageContext } from '..'
+import { Filter } from 'lucide-react'
 
 export function HeaderActionsFilters() {
   const [isFiltersOpened, setIsFiltersOpened] = useState(false)
@@ -18,7 +18,7 @@ export function HeaderActionsFilters() {
           <TooltipTrigger asChild>
             <PopoverTrigger asChild>
               <Button size="icon" variant="outline">
-                <RiFilterLine />
+                <Filter />
               </Button>
             </PopoverTrigger>
           </TooltipTrigger>

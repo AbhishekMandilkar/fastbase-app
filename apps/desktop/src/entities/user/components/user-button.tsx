@@ -1,7 +1,7 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@fastbase/ui/components/dropdown-menu'
-import { RiLogoutCircleRLine } from '@remixicon/react'
 import { useSignOut } from '../hooks/use-sign-out'
 import { UserAvatar } from './user-avatar'
+import {LogOut} from 'lucide-react'
 
 export function UserButton() {
   const { data, signOut, isSigningOut } = useSignOut()
@@ -28,7 +28,7 @@ export function UserButton() {
           disabled={isSigningOut}
           onClick={() => signOut()}
         >
-          <RiLogoutCircleRLine />
+          <LogOut />
           Sign out
         </DropdownMenuItem>
       </DropdownMenuContent>

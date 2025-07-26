@@ -3,7 +3,6 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Button } from '@fastbase/ui/components/button'
 import { LoadingContent } from '@fastbase/ui/components/custom/loading-content'
 import NumberFlow from '@number-flow/react'
-import { RiDeleteBin7Line } from '@remixicon/react'
 import { useInfiniteQuery, useMutation } from '@tanstack/react-query'
 import { useStore } from '@tanstack/react-store'
 import { AnimatePresence, motion } from 'motion/react'
@@ -15,6 +14,7 @@ import { queryClient } from '~/main'
 import { usePageContext } from '..'
 import { usePrimaryKeysQuery } from '../-queries/use-primary-keys-query'
 import { useRowsQueryOpts } from '../-queries/use-rows-query-opts'
+import {Trash} from 'lucide-react'
 
 export function HeaderActionsDelete({ table, schema, database }: { table: string, schema: string, database: Database }) {
   const rowsQueryOpts = useRowsQueryOpts()
@@ -112,7 +112,7 @@ export function HeaderActionsDelete({ table, schema, database }: { table: string
             transition={{ duration: 0.1 }}
           >
             <Button variant="destructive" onClick={() => setIsOpened(true)}>
-              <RiDeleteBin7Line />
+              <Trash className="size-4" />
               <span>
                 Delete
                 (

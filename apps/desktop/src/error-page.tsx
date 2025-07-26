@@ -5,12 +5,12 @@ import { DotsBg } from '@fastbase/ui/components/custom/dots-bg'
 import { ScrollArea } from '@fastbase/ui/components/custom/scroll-area'
 import { Toaster } from '@fastbase/ui/components/sonner'
 import { ThemeProvider } from '@fastbase/ui/theme-provider'
-import { RiAlertLine, RiArrowGoBackLine, RiLoopLeftLine } from '@remixicon/react'
 import { useRouter } from '@tanstack/react-router'
 import { TraversalError } from 'arktype'
 import posthog from 'posthog-js'
 import { useEffect } from 'react'
 import { EventsProvider } from './lib/events'
+import {AlertCircle, ArrowLeft, RotateCcw} from 'lucide-react'
 
 export function ErrorPage({ error }: ErrorComponentProps) {
   const router = useRouter()
@@ -30,7 +30,7 @@ export function ErrorPage({ error }: ErrorComponentProps) {
             <Card>
               <CardHeader className="text-center">
                 <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-destructive/10">
-                  <RiAlertLine className="size-8 text-destructive" />
+                  <AlertCircle className="size-8 text-destructive" />
                 </div>
                 <CardTitle className="text-xl">Something went wrong</CardTitle>
                 <CardDescription>
@@ -82,14 +82,14 @@ export function ErrorPage({ error }: ErrorComponentProps) {
                   className="flex-1"
                   onClick={() => router.history.back()}
                 >
-                  <RiArrowGoBackLine className="mr-1" />
+                  <ArrowLeft className="mr-1" />
                   Go back
                 </Button>
                 <Button
                   className="flex-1"
                   onClick={() => window.location.reload()}
                 >
-                  <RiLoopLeftLine className="mr-1" />
+                  <RotateCcw className="mr-1" />
                   Refresh
                 </Button>
               </CardFooter>

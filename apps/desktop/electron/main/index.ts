@@ -29,9 +29,9 @@ export function createWindow() {
     webPreferences: {
       preload: path.join(path.dirname(fileURLToPath(import.meta.url)), '../preload/index.mjs'),
       nodeIntegration: false,
-  contextIsolation: true,
-  webSecurity: true,
-  devTools: true,
+      contextIsolation: true,
+      devTools: true,
+      webSecurity: true,
     },
   })
 

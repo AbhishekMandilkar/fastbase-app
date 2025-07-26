@@ -4,7 +4,6 @@ import {Button} from '@fastbase/ui/components/button'
 import {ScrollArea} from '@fastbase/ui/components/custom/scroll-area'
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from '@fastbase/ui/components/tooltip'
 import {clickHandlers, cn} from '@fastbase/ui/lib/utils'
-import {RiCommandLine, RiListUnordered, RiMoonLine, RiPlayLargeLine, RiSunLine, RiTableLine} from '@remixicon/react'
 import {Link, useLocation, useMatches, useNavigate, useParams} from '@tanstack/react-router'
 import {useEffect} from 'react'
 import {ThemeToggle} from '~/components/theme-toggle'
@@ -15,7 +14,7 @@ import {useLastOpenedTable} from '../routes/(protected)/_protected/database/-hoo
 import {Sidebar, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarFooter} from '@fastbase/ui/components/sidebar'
 import Brand from '@fastbase/ui/components/brand/brand'
 import {Separator} from '@fastbase/ui/components/separator'
-import {CodeIcon, ListIcon, TableIcon} from 'lucide-react'
+import {AppleIcon, CodeIcon, HomeIcon, ListIcon, TableIcon} from 'lucide-react'
 
 const os = getOS()
 
@@ -85,17 +84,16 @@ export function DatabaseSidebar({className, ...props}: React.ComponentProps<'div
       className="!w-[calc(var(--sidebar-width-icon)_+_1px)] h-screen"
     >
       <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton asChild className="p-0" tooltip={{
-              children: 'Home',
-              hidden: false
-            }}>
-              <AppLogo className="size-4" />
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild>
+                <Link to="/">
+                  <HomeIcon className="size-8" />
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarHeader>
       <Separator />
       <SidebarContent>
         <SidebarGroup>

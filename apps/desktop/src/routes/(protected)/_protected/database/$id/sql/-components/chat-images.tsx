@@ -1,6 +1,6 @@
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@conar/ui/components/tooltip'
-import { cn } from '@conar/ui/lib/utils'
-import { RiCloseLine } from '@remixicon/react'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@fastbase/ui/components/tooltip'
+import { cn } from '@fastbase/ui/lib/utils'
+import {X} from 'lucide-react'
 
 export function ChatImages({
   images,
@@ -31,7 +31,7 @@ export function ChatImages({
                     onRemove(index)
                   }}
                 >
-                  <RiCloseLine className="size-3" />
+                  <X className="size-3" />
                 </span>
               )}
               <div className="absolute inset-0 bg-black/5 rounded-md opacity-0 group-hover:opacity-100 transition-opacity" />

@@ -2,7 +2,6 @@ import type { ColumnRenderer } from '~/components/table'
 import { useInViewport } from '@fastbase/ui/hookas/use-in-viewport'
 import { useMountedEffect } from '@fastbase/ui/hookas/use-mounted-effect'
 import { cn } from '@fastbase/ui/lib/utils'
-import { RiErrorWarningLine, RiLoaderLine, RiMoreLine } from '@remixicon/react'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useStore } from '@tanstack/react-store'
 import { useEffect, useMemo, useRef } from 'react'
@@ -18,6 +17,7 @@ import { useRowsQueryOpts } from '../-queries/use-rows-query-opts'
 import { TableHeaderCell } from './table-header-cell'
 import { SelectionCell, SelectionHeaderCell } from './table-selection'
 import { TableBodySkeleton, TableHeaderSkeleton } from './table-skeleton'
+import {AlertTriangle, Loader2, MoreHorizontal} from 'lucide-react'
 
 const selectSymbol = Symbol('table-selection')
 
@@ -37,7 +37,7 @@ export function TableError({ error }: { error: Error }) {
     <div className="sticky left-0 pointer-events-none h-full flex items-center pb-10 justify-center">
       <div className="flex flex-col items-center p-4 bg-card rounded-lg border max-w-md">
         <div className="flex items-center gap-1 text-destructive mb-2">
-          <RiErrorWarningLine className="size-4" />
+          <AlertTriangle className="size-4" />
           <span>Error occurred</span>
         </div>
         <p className="text-sm text-center text-muted-foreground">
@@ -53,7 +53,7 @@ export function TableEmpty({ className, title, description }: { className?: stri
     <div className={cn('sticky left-0 pointer-events-none flex items-center justify-center', className)}>
       <div className="flex flex-col items-center justify-center w-full h-32">
         <div className="flex items-center justify-center rounded-full bg-muted/60 p-3 mb-4">
-          <RiMoreLine className="size-6 text-muted-foreground" />
+          <MoreHorizontal className="size-6 text-muted-foreground" />
         </div>
         <span className="text-muted-foreground font-medium">{title}</span>
         <span className="text-xs text-muted-foreground/70">{description}</span>
@@ -86,7 +86,7 @@ function TableInfiniteLoader() {
       <div ref={loaderRef} className="absolute h-[calc(50vh+50rem)] bottom-0 inset-x-0" />
       <div className="flex items-center justify-center h-[inherit]">
         {hasNextPage
-          ? <RiLoaderLine className="size-10 animate-spin opacity-50" />
+          ? <Loader2 className="size-10 animate-spin opacity-50" />
           : <TableEmpty className="bottom-0 h-full" title="No more data" description="This table has no more rows" />}
       </div>
     </div>

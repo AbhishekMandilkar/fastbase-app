@@ -6,9 +6,9 @@ import { LoadingContent } from '@fastbase/ui/components/custom/loading-content'
 import { Input } from '@fastbase/ui/components/input'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@fastbase/ui/components/tooltip'
 import { useSessionStorage } from '@fastbase/ui/hookas/use-session-storage'
-import { RiCheckLine, RiCloseLine, RiLoopLeftLine } from '@remixicon/react'
 import { useDatabaseTablesAndSchemas } from '~/entities/database'
 import { TablesTree } from './tables-tree'
+import {Check, RotateCcw, X} from 'lucide-react'
 
 export function Sidebar({ database }: { database: Database }) {
   const { data: tablesAndSchemas, refetch: refetchTablesAndSchemas, isFetching: isRefreshingTablesAndSchemas, dataUpdatedAt } = useDatabaseTablesAndSchemas(database)
@@ -23,16 +23,16 @@ export function Sidebar({ database }: { database: Database }) {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
-                  variant="outline"
-                  size="iconSm"
+                  variant="ghost"
+                  size="icon"
                   onClick={() => refetchTablesAndSchemas()}
                 >
                   <LoadingContent loading={isRefreshingTablesAndSchemas}>
                     <ContentSwitch
-                      activeContent={<RiCheckLine className="text-success" />}
+                      activeContent={<Check className="text-success" />}
                       active={!isRefreshingTablesAndSchemas}
                     >
-                      <RiLoopLeftLine />
+                      <RotateCcw />
                     </ContentSwitch>
                   </LoadingContent>
                 </Button>
@@ -62,7 +62,7 @@ export function Sidebar({ database }: { database: Database }) {
                 className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer p-1"
                 onClick={() => setSearch('')}
               >
-                <RiCloseLine className="size-4 text-muted-foreground" />
+                <X className="size-4 text-muted-foreground" />
               </button>
             )}
           </div>
