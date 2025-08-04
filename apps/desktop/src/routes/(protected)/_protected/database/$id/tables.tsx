@@ -4,7 +4,7 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@fastbase/
 import { createFileRoute, Outlet, useParams } from '@tanstack/react-router'
 import { useRef } from 'react'
 import { useDatabase } from '~/entities/database'
-import { Sidebar } from './-components/sidebar'
+import { TablesSidebar } from './-components/sidebar'
 import { TablesTabs } from './-components/tabs'
 
 export const Route = createFileRoute(
@@ -64,18 +64,17 @@ function DatabaseTablesPage() {
 
   return (
     <ResizablePanelGroup autoSaveId={`database-layout-${id}`} direction="horizontal" className="flex">
-      <ResizablePanel
-        defaultSize={20}
-        minSize={10}
-        maxSize={50}
-        className="flex flex-col h-full border bg-background"
-      >
-        <Sidebar database={database} />
-      </ResizablePanel>
-      <ResizableHandle className="w-1 bg-transparent" />
-      <ResizablePanel defaultSize={80} className="flex-1 border bg-background">
-        <Content id={id} />
-      </ResizablePanel>
-    </ResizablePanelGroup>
+    <ResizablePanel
+      defaultSize={20}
+      minSize={10}
+      maxSize={50}
+      className="flex flex-col h-full border bg-background"
+    >
+      <TablesSidebar database={database} />
+    </ResizablePanel>
+    <ResizablePanel defaultSize={80} className="flex-1 border bg-background">
+      <Content id={id} />
+    </ResizablePanel>
+  </ResizablePanelGroup>
   )
 }
