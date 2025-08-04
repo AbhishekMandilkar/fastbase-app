@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react'
 import { useChat } from '@ai-sdk/react'
-import { cn } from '@conar/ui/lib/utils'
+import { cn } from '@fastbase/ui/lib/utils'
 import { useEffect } from 'react'
 import { databaseContextQuery } from '~/entities/database'
 import { queryClient } from '~/main'

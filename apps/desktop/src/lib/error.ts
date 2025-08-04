@@ -1,10 +1,9 @@
-import { TRPCClientError } from '@trpc/client'
+
 import { toast } from 'sonner'
 import { fullSignOut } from '~/lib/auth'
 
 function getErrorMessage(error: unknown) {
-  return (error instanceof TRPCClientError && error.data.arktypeError)
-    || (error as Error)?.message
+  return (error as Error)?.message
     || 'Our server is practicing its meditation. Please, try again later.'
 }
 
@@ -22,7 +21,6 @@ export async function handleError(error: unknown) {
       && error.status === 401
       && error.code !== 'INVALID_EMAIL_OR_PASSWORD'
     )
-    || (error instanceof TRPCClientError && error.data.code === 'UNAUTHORIZED')
   ) {
     await fullSignOut()
     toast.info('Your session has expired. Please, sign in again.')

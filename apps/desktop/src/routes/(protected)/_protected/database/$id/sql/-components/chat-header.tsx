@@ -1,7 +1,7 @@
 import type { UseChatHelpers } from '@ai-sdk/react'
-import { Button } from '@conar/ui/components/button'
-import { CardTitle } from '@conar/ui/components/card'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@conar/ui/components/tooltip'
+import { Button } from '@fastbase/ui/components/button'
+import { CardTitle } from '@fastbase/ui/components/card'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@fastbase/ui/components/tooltip'
 import {Trash} from 'lucide-react'
 
 export function ChatHeader({

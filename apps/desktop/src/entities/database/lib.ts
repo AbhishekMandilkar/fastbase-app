@@ -5,7 +5,6 @@ import { databaseContextType } from '@fastbase/shared/database'
 import { toast } from 'sonner'
 import { indexedDb } from '~/lib/indexeddb'
 import { dbQuery } from '~/lib/query'
-import { trpc } from '~/lib/trpc'
 import { queryClient } from '~/main'
 import { databaseColumnsQuery } from './queries/columns'
 import { databaseQuery, databasesQuery } from './queries/database'
@@ -22,26 +21,14 @@ export async function fetchDatabases() {
   }
 
   try {
-    const [fetchedDatabases, existingDatabases] = await Promise.all([
-      trpc.databases.list.query(),
+    const [fetchedDatabases] = await Promise.all([
       indexedDb.databases.toArray(),
     ])
-    const existingMap = new Map(existingDatabases.map(d => [d.id, d]))
     const fetchedMap = new Map(fetchedDatabases.map(d => [d.id, d]))
 
-    const toDelete = existingDatabases
-      .filter(d => !fetchedMap.has(d.id))
-      .map(d => d.id)
-    const toAdd = fetchedDatabases
-      .filter(d => !existingMap.has(d.id))
-      .map(d => ({
-        ...d,
-        isPasswordPopulated: !!new URL(d.connectionString).password,
-      }))
     const toUpdate = fetchedDatabases
-      .filter(d => !!existingMap.get(d.id))
       .map((d) => {
-        const existing = existingMap.get(d.id)!
+        const existing = fetchedMap.get(d.id)!
         const changes: Partial<Database> = {}
 
         if (existing.name !== d.name) {
@@ -66,17 +53,11 @@ export async function fetchDatabases() {
       })
 
     await Promise.all([
-      indexedDb.databases.bulkDelete(toDelete),
-      indexedDb.databases.bulkAdd(toAdd),
       indexedDb.databases.bulkUpdate(toUpdate),
     ]);
 
-    [
-      ...toDelete,
-      ...toAdd.map(d => d.id),
-      ...toUpdate.filter(d => Object.keys(d.changes).length > 0).map(d => d.key),
-    ].forEach((id) => {
-      queryClient.invalidateQueries({ queryKey: databaseQuery(id).queryKey })
+    toUpdate.forEach(({ key }) => {
+      queryClient.invalidateQueries({ queryKey: databaseQuery(key).queryKey })
     })
     queryClient.invalidateQueries({ queryKey: databasesQuery().queryKey })
   }
@@ -120,7 +101,6 @@ export async function createDatabase({ saveInCloud, ...database }: {
 
 export async function removeDatabase(id: string) {
   await Promise.all([
-    trpc.databases.remove.mutate({ id }),
     indexedDb.databases.delete(id),
   ])
 }

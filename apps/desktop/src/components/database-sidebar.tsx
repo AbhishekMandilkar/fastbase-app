@@ -14,7 +14,7 @@ import {useLastOpenedTable} from '../routes/(protected)/_protected/database/-hoo
 import {Sidebar, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarFooter} from '@fastbase/ui/components/sidebar'
 import Brand from '@fastbase/ui/components/brand/brand'
 import {Separator} from '@fastbase/ui/components/separator'
-import {AppleIcon, CodeIcon, HomeIcon, ListIcon, TableIcon} from 'lucide-react'
+import {AppleIcon, CodeIcon, HomeIcon, ListIcon, Moon, TableIcon} from 'lucide-react'
 
 const os = getOS()
 
@@ -129,6 +129,11 @@ export function DatabaseSidebar({className, ...props}: React.ComponentProps<'div
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
+        <ThemeToggle>
+          <Button variant="ghost" size="icon">
+            <Moon className="size-4" />
+          </Button>
+        </ThemeToggle>
       </SidebarFooter>
     </Sidebar>
 

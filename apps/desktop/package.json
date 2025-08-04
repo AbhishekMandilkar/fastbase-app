@@ -47,7 +47,6 @@
     "@tiptap/extension-placeholder": "^2.14.0",
     "@tiptap/react": "^2.14.0",
     "@tiptap/starter-kit": "^2.14.0",
-    "@trpc/client": "^11.3.1",
     "@types/electron-squirrel-startup": "^1.0.2",
     "@types/pg": "^8.15.4",
     "@types/react": "^19.1.6",
