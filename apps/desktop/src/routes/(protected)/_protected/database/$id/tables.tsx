@@ -1,32 +1,32 @@
-import type { ComponentRef } from 'react'
-import { title } from '@fastbase/shared/utils/title'
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@fastbase/ui/components/resizable'
-import { createFileRoute, Outlet, useParams } from '@tanstack/react-router'
-import { useRef } from 'react'
-import { useDatabase } from '~/entities/database'
-import { TablesSidebar } from './-components/sidebar'
-import { TablesTabs } from './-components/tabs'
+import type {ComponentRef} from 'react'
+import {title} from '@fastbase/shared/utils/title'
+import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from '@fastbase/ui/components/resizable'
+import {createFileRoute, Outlet, useParams} from '@tanstack/react-router'
+import {useRef} from 'react'
+import {useDatabase} from '~/entities/database'
+import {TablesSidebar} from './-components/sidebar'
+import {TablesTabs} from './-components/tabs'
 
 export const Route = createFileRoute(
   '/(protected)/_protected/database/$id/tables',
 )({
   component: DatabaseTablesPage,
-  loader: ({ context }) => ({ database: context.database }),
-  head: ({ loaderData }) => ({
+  loader: ({context}) => ({database: context.database}),
+  head: ({loaderData}) => ({
     meta: loaderData
       ? [
-          {
-            title: title('Tables', loaderData.database.name),
-          },
-        ]
+        {
+          title: title('Tables', loaderData.database.name),
+        },
+      ]
       : [],
   }),
 })
 
-function Content({ id }: { id: string }) {
-  const { schema: schemaParam, table: tableParam } = useParams({ strict: false })
+function Content({id}: {id: string}) {
+  const {schema: schemaParam, table: tableParam} = useParams({strict: false})
   const tabsRef = useRef<ComponentRef<typeof TablesTabs>>(null)
-  const { data: database } = useDatabase(id)
+  const {data: database} = useDatabase(id)
 
   if (!schemaParam || !tableParam) {
     return (
@@ -59,22 +59,22 @@ function Content({ id }: { id: string }) {
 }
 
 function DatabaseTablesPage() {
-  const { id } = Route.useParams()
-  const { data: database } = useDatabase(id)
+  const {id} = Route.useParams()
+  const {data: database} = useDatabase(id)
 
   return (
     <ResizablePanelGroup autoSaveId={`database-layout-${id}`} direction="horizontal" className="flex">
-    <ResizablePanel
-      defaultSize={20}
-      minSize={10}
-      maxSize={50}
-      className="flex flex-col h-full border bg-background"
-    >
-      <TablesSidebar database={database} />
-    </ResizablePanel>
-    <ResizablePanel defaultSize={80} className="flex-1 border bg-background">
-      <Content id={id} />
-    </ResizablePanel>
-  </ResizablePanelGroup>
+      <ResizablePanel
+        defaultSize={20}
+        minSize={10}
+        maxSize={50}
+        className="flex flex-col h-full border bg-background"
+      >
+        <TablesSidebar database={database} />
+      </ResizablePanel>
+      <ResizablePanel defaultSize={80} className="flex-1 border bg-background">
+        <Content id={id} />
+      </ResizablePanel>
+    </ResizablePanelGroup>
   )
 }
