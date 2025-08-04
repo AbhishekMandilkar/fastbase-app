@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "new-york",
+  "rsc": false,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "src/styles/globals.css",
+    "baseColor": "zinc",
+    "cssVariables": true
+  },
+  "iconLibrary": "lucide",
+  "aliases": {
+    "components": "@fastbase/ui/components",
+    "utils": "@fastbase/ui/lib/utils",
+    "hooks": "@fastbase/ui/hooks",
+    "lib": "@fastbase/ui/lib",
+    "ui": "@fastbase/ui/components"
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "name": "@fastbase/tsconfig",
+  "type": "module",
+  "private": true
+}
