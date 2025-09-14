@@ -11,7 +11,7 @@ import { chatMessages, chatQuery } from './-lib'
 export const pageStore = new Store({
   query: '',
   files: [] as File[],
-  model: 'auto' as AiSqlChatModel | 'auto',
+  model: "gpt-4o-mini" as AiSqlChatModel,
 })
 
 export const pageHooks = createHooks<{

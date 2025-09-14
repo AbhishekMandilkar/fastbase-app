@@ -48,7 +48,7 @@ export function TablesSidebar({database}: {database: Database}) {
     )
   }
 
-  return <Sidebar collapsible="none">
+  return <Sidebar collapsible="none" className="border-l">
     <SidebarHeader className="gap-3.5 border-b p-4">
       <div className="flex w-full items-center justify-between">
         <div className="text-base font-medium text-foreground">Tables</div>

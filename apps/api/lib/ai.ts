@@ -27,6 +27,7 @@ export function generateStream({
   console.info('messages', messages)
 
   return streamText({
+    temperature: 1,
     messages: [
       {
         role: 'system',
@@ -88,8 +89,11 @@ const models: Record<AiSqlChatModel, LanguageModelV1> = {
   [AiSqlChatModel.Claude_3_7_Sonnet]: anthropic('claude-3-7-sonnet-20250219'),
   [AiSqlChatModel.Claude_4_Opus]: anthropic('claude-4-opus-20250514'),
   [AiSqlChatModel.GPT_4o_Mini]: openai('gpt-4o-mini'),
+  [AiSqlChatModel.GPT_5_Mini]: openai('gpt-5-mini'),
+  [AiSqlChatModel.GPT_5_Nano]: openai('gpt-5-nano'),
   [AiSqlChatModel.Gemini_2_5_Pro]: google('gemini-2.5-pro-exp-03-25'),
   [AiSqlChatModel.Grok_3]: xai('grok-3-latest'),
+  [AiSqlChatModel.GPT_5]: openai('gpt-5'),
 }
 
 const autoModel = models[AiSqlChatModel.GPT_4o_Mini]

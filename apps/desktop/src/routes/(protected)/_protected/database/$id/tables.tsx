@@ -64,14 +64,7 @@ function DatabaseTablesPage() {
 
   return (
     <ResizablePanelGroup autoSaveId={`database-layout-${id}`} direction="horizontal" className="flex">
-      <ResizablePanel
-        defaultSize={20}
-        minSize={10}
-        maxSize={50}
-        className="flex flex-col h-full border bg-background"
-      >
-        <TablesSidebar database={database} />
-      </ResizablePanel>
+      <TablesSidebar database={database} />
       <ResizablePanel defaultSize={80} className="flex-1 border bg-background">
         <Content id={id} />
       </ResizablePanel>

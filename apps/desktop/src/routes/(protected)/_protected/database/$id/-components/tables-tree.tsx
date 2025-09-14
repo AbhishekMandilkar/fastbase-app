@@ -128,6 +128,7 @@ export function TablesTree({ database, className, search }: { database: Database
                                 animate={{ opacity: 1, height: 'auto' }}
                                 exit={{ opacity: 0, height: 0 }}
                                 transition={{ duration: 0.2 }}
+                                className="my-1"
                               >
                                 <Link
                                   to="/database/$id/tables/$schema/$table"

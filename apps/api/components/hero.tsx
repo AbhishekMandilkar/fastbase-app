@@ -13,7 +13,7 @@ import { WaitlistCount } from "./waitlist-count";
 export default function Hero() {
   return (
     <section className="container py-12 px-4 md:py-24 space-y-6 relative">
-      <div className="flex flex-col items-center text-center relative space-y-6">
+      <div className="flex flex-col items-center text-center relative space-y-12">
         <Link href="/apr-25">
           <ShinyButton className="flex items-center gap-2">
             Recent Updates <ArrowRight className="w-4 h-4" />
@@ -28,8 +28,8 @@ export default function Hero() {
           Databases Are Complex—Your Client Shouldn't Be
         </TextEffect>
         <SmoothMount>
-          <div className="flex flex-col items-center text-center space-y-6">
-            <p className="max-w-[600px] text-xl text-muted-foreground">
+          <div className="flex flex-col items-center text-center space-y-10">
+            <p className="max-w-[600px] text-xl text-muted-foreground font-mono">
               Fastbase brings clarity, speed, and elegance to PostgreSQL
               management with a sprinkle of AI
             </p>

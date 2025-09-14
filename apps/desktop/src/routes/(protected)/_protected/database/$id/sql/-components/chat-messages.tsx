@@ -15,7 +15,7 @@ import { sleep } from '~/lib/helpers'
 import { pageHooks, pageStore, Route } from '..'
 import { chatMessages } from '../-lib'
 import { ChatImages } from './chat-images'
-import {Copy, RefreshCcw, RotateCcw, Terminal} from 'lucide-react'
+import {BotIcon, Copy, RefreshCcw, RotateCcw, Terminal} from 'lucide-react'
 
 interface attachment {
   name?: string
@@ -69,7 +69,9 @@ function UserMessage({ text, attachments, className, ...props }: { text: string,
 function AssistantAvatar() {
   return (
     <Avatar className="size-6">
-      <AvatarFallback className="text-xs">AI</AvatarFallback>
+      <AvatarFallback className="text-xs">
+        <BotIcon className="size-3" />
+      </AvatarFallback>
     </Avatar>
   )
 }

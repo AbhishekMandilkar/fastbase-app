@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@fastbase/ui/components/avatar'
 import { cn } from '@fastbase/ui/lib/utils'
+import {UserRoundIcon} from 'lucide-react'
 import { useMemo } from 'react'
 import { authClient } from '~/lib/auth'
 
@@ -25,7 +26,7 @@ export function UserAvatar({ className, fallbackClassName }: { className?: strin
   return (
     <Avatar className={cn('size-6', className)}>
       {data?.user.image && <AvatarImage src={data?.user.image} />}
-      <AvatarFallback className={cn('uppercase text-xs', fallbackClassName)}>{fallback}</AvatarFallback>
+      <AvatarFallback className={cn('uppercase text-xs', fallbackClassName)}>{<UserRoundIcon className="size-3" />}</AvatarFallback>
     </Avatar>
   )
 }
