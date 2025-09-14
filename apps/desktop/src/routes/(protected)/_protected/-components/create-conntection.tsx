@@ -1,0 +1,334 @@
+import {databaseLabels, DatabaseType} from "@fastbase/shared/enums/database-type"
+import {getProtocols} from "@fastbase/shared/utils/connections"
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@fastbase/ui/components/card"
+import {Input} from "@fastbase/ui/components/input"
+import {Label} from "@fastbase/ui/components/label"
+import {ToggleGroup, ToggleGroupItem} from "@fastbase/ui/components/toggle-group"
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@fastbase/ui/components/tooltip"
+import {RefObject, useId, useRef, useState} from "react"
+import {ConnectionDetails} from "~/components/connection-details"
+import {MySQLIcon} from "~/icons/mysql"
+import {PostgresIcon} from "~/icons/postgres"
+import {Button} from "@fastbase/ui/components/button"
+import {RefreshCw, SaveIcon} from "lucide-react"
+import {useRouter} from '@tanstack/react-router'
+import {useMutation} from "@tanstack/react-query"
+import {createDatabase, databaseQuery, databasesQuery, prefetchDatabaseCore} from "~/entities/database"
+import {toast} from "sonner"
+import {queryClient} from "~/main"
+import {useForm, useStore} from "@tanstack/react-form"
+import {dbTestConnection} from "~/lib/query"
+import {Stepper, StepperContent, StepperList, StepperTrigger} from "~/components/stepper"
+import {type} from "arktype"
+import {faker} from "@faker-js/faker"
+import {AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction} from "@fastbase/ui/components/alert-dialog"
+import {LoadingContent} from "@fastbase/ui/components/custom/loading-content"
+
+
+
+function generateRandomName() {
+    const vehicle = faker.vehicle.model()
+    const color = faker.color.human()
+
+    return `${color.charAt(0).toUpperCase() + color.slice(1)} ${vehicle}`
+}
+
+
+function StepType({type, setType}: {type: DatabaseType, setType: (type: DatabaseType) => void}) {
+    return (
+        <Card className="w-full">
+            <CardHeader>
+                <CardTitle>Type of connection</CardTitle>
+                <CardDescription>Choose the type of connection you want to create.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <ToggleGroup
+                    type="single"
+                    variant="outline"
+                    value={type}
+                    onValueChange={value => setType(value as DatabaseType)}
+                >
+                    <ToggleGroupItem value={DatabaseType.Postgres} aria-label="Postgres">
+                        <PostgresIcon />
+                        {databaseLabels[DatabaseType.Postgres]}
+                    </ToggleGroupItem>
+                    <ToggleGroupItem value="" disabled aria-label="MySQL">
+                        <MySQLIcon />
+                        MySQL (wip)
+                    </ToggleGroupItem>
+                </ToggleGroup>
+            </CardContent>
+        </Card>
+    )
+}
+
+function StepCredentials({ref, type, connectionString, setConnectionString}: {ref: RefObject<HTMLInputElement | null>, type: DatabaseType, connectionString: string, setConnectionString: (connectionString: string) => void}) {
+    const id = useId()
+
+    return (
+        <Card className="w-full">
+            <CardHeader>
+                <CardTitle>Credentials</CardTitle>
+                <CardDescription>Enter the credentials of your connection.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <Label htmlFor={id} className="mb-2">
+                    Connection string
+                </Label>
+                <Input
+                    id={id}
+                    placeholder={`${getProtocols(type)[0]}://user:password@host:port/database?options`}
+                    ref={ref}
+                    value={connectionString}
+                    onChange={e => setConnectionString(e.target.value)}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault()
+                        }
+                    }}
+                />
+            </CardContent>
+        </Card>
+    )
+}
+
+function StepSave({type, name, connectionString, setName, onRandomName, saveInCloud, setSaveInCloud}: {type: DatabaseType, name: string, connectionString: string, setName: (name: string) => void, onRandomName: () => void, saveInCloud: boolean, setSaveInCloud: (saveInCloud: boolean) => void}) {
+    const nameId = useId()
+
+    return (
+        <Card className="w-full">
+            <CardHeader>
+                <CardTitle>Save connection</CardTitle>
+                <CardDescription>Save the connection to your account.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <ConnectionDetails className="mb-6" type={type} connectionString={connectionString} />
+                <div className="flex flex-col gap-6">
+                    <div>
+                        <Label htmlFor={nameId} className="mb-2">
+                            Connection name
+                        </Label>
+                        <div className="flex w-full gap-2 items-end">
+                            <Input
+                                id={nameId}
+                                className="field-sizing-content"
+                                placeholder="My connection"
+                                value={name}
+                                onChange={e => setName(e.target.value)}
+                            />
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Button
+                                            type="button"
+                                            variant="outline"
+                                            size="icon"
+                                            onClick={onRandomName}
+                                        >
+                                            <RefreshCw />
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent sideOffset={8}>
+                                        Generate a random connection name
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        </div>
+                    </div>
+                </div>
+            </CardContent>
+        </Card>
+    )
+}
+
+export default function CreateConnection() {
+    const [step, setStep] = useState<'type' | 'credentials' | 'save'>('type')
+    const router = useRouter()
+    const inputRef = useRef<HTMLInputElement>(null)
+
+    const {mutate, isPending: isCreating} = useMutation({
+        mutationFn: createDatabase,
+        onSuccess: async ({id}) => {
+            toast.success('Connection created successfully 🎉')
+            queryClient.ensureQueryData(databaseQuery(id)).then(prefetchDatabaseCore)
+            queryClient.invalidateQueries({queryKey: databasesQuery().queryKey})
+            router.navigate({to: '/database/$id/tables', params: {id}})
+        },
+        onError: (error) => {
+            toast.error('Failed to create connection', {
+                description: error.message,
+            })
+        },
+    })
+
+    const form = useForm({
+        defaultValues: {
+            connectionString: '',
+            name: generateRandomName(),
+            type: null! as DatabaseType,
+            saveInCloud: true,
+        },
+        validators: {
+            onChange: type({
+                name: 'string > 1',
+                type: type.valueOf(DatabaseType),
+                connectionString: 'string > 1',
+                saveInCloud: 'boolean',
+            }),
+            onSubmit(e) {
+                mutate(e.value)
+            },
+        },
+    })
+
+    const {mutate: testConnection, reset, status} = useMutation({
+        mutationFn: dbTestConnection,
+        onSuccess: () => {
+            setStep('save')
+            toast.success('Connection successful. You can save the database.')
+        },
+        onError: (error) => {
+            toast.error('We couldn\'t connect to the database', {
+                description: error.message,
+            })
+        },
+    })
+
+    const [typeValue, connectionString, name, saveInCloud] = useStore(form.store, ({values}) => [values.type, values.connectionString, values.name, values.saveInCloud])
+
+    return (
+        <div className="min-h-screen flex flex-col justify-center">
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault()
+                    form.handleSubmit()
+                }}
+                className="flex py-10 flex-col w-full max-w-2xl px-6 mx-auto"
+            >
+                <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+                    Add a connection
+                </h1>
+                <p className="leading-7 [&:not(:first-child)]:mt-2 mb-10 text-muted-foreground">
+                    Connect to your database by providing the connection details.
+                </p>
+                <Stepper
+                    active={step}
+                    onChange={setStep}
+                >
+                    <StepperList>
+                        <StepperTrigger value="type" number={1}>
+                            Type
+                        </StepperTrigger>
+                        <StepperTrigger value="credentials" number={2}>
+                            Credentials
+                        </StepperTrigger>
+                        <StepperTrigger value="save" number={3}>
+                            Save
+                        </StepperTrigger>
+                    </StepperList>
+                    <StepperContent value="type">
+                        <StepType type={typeValue} setType={type => form.setFieldValue('type', type)} />
+                        <div className="mt-auto flex justify-end gap-4 pt-4">
+                            <Button
+                                disabled={!typeValue}
+                                className="cursor-pointer"
+                                onClick={() => setStep('credentials')}
+                            >
+                                Continue
+                            </Button>
+                        </div>
+                    </StepperContent>
+                    <StepperContent value="credentials">
+                        <StepCredentials
+                            ref={inputRef}
+                            type={typeValue}
+                            connectionString={connectionString}
+                            setConnectionString={(connectionString) => {
+                                reset()
+                                form.setFieldValue('connectionString', connectionString)
+                            }}
+                        />
+                        <div className="flex gap-2 justify-end mt-auto pt-4">
+                            <div className="flex gap-2">
+                                <Button variant="outline" onClick={() => setStep('type')}>
+                                    Back
+                                </Button>
+                                {status === 'success'
+                                    ? (
+                                        <Button
+                                            variant="default"
+                                            onClick={() => setStep('save')}
+                                        >
+                                            Continue
+                                        </Button>
+                                    )
+                                    : status === 'error'
+                                        ? (
+                                            <AlertDialog>
+                                                <AlertDialogTrigger asChild>
+                                                    <Button variant="destructive">
+                                                        Continue with connection error
+                                                    </Button>
+                                                </AlertDialogTrigger>
+                                                <AlertDialogContent>
+                                                    <AlertDialogHeader>
+                                                        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                                        <AlertDialogDescription>
+                                                            Only proceed if you're sure that your connection string is correct and the database will be accessible later.
+                                                        </AlertDialogDescription>
+                                                    </AlertDialogHeader>
+                                                    <AlertDialogFooter>
+                                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                        <AlertDialogAction
+                                                            variant="destructive"
+                                                            onClick={() => setStep('save')}
+                                                        >
+                                                            Continue
+                                                        </AlertDialogAction>
+                                                    </AlertDialogFooter>
+                                                </AlertDialogContent>
+                                            </AlertDialog>
+                                        )
+                                        : (
+                                            <Button
+                                                disabled={status === 'pending' || !connectionString}
+                                                onClick={() => testConnection(form.state.values)}
+                                            >
+                                                <LoadingContent loading={status === 'pending'}>
+                                                    Test connection
+                                                </LoadingContent>
+                                            </Button>
+                                        )}
+                            </div>
+                        </div>
+                    </StepperContent>
+                    <StepperContent value="save">
+                        <StepSave
+                            type={typeValue}
+                            name={name}
+                            connectionString={connectionString}
+                            setName={name => form.setFieldValue('name', name)}
+                            onRandomName={() => form.setFieldValue('name', generateRandomName())}
+                            saveInCloud={saveInCloud}
+                            setSaveInCloud={saveInCloud => form.setFieldValue('saveInCloud', saveInCloud)}
+                        />
+                        <div className="flex gap-2 justify-end mt-auto pt-4">
+                            <Button variant="outline" onClick={() => setStep('credentials')}>
+                                Back
+                            </Button>
+                            <Button
+                                type="submit"
+                                disabled={isCreating || status === 'pending' || !form.state.isValid}
+                            >
+                                <LoadingContent loading={isCreating || status === 'pending'}>
+                                    <SaveIcon className="w-4 h-4" />
+                                    Save connection
+                                </LoadingContent>
+                            </Button>
+                        </div>
+                    </StepperContent>
+                </Stepper>
+            </form>
+        </div>
+    )
+}

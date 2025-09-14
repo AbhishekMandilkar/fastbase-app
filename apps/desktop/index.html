@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://eu.i.posthog.com https://eu-assets.i.posthog.com; worker-src blob: file: http://localhost:*;" />
+    <title>Fastbase</title>
+    <script>
+      const theme = localStorage.getItem('fastbase.theme')
+      if (
+        theme === 'dark'
+        || (
+          (theme === null || theme === 'system')
+          && window.matchMedia('(prefers-color-scheme: dark)').matches
+        )
+      ) {
+        document.documentElement.classList.add('dark')
+      }
+    </script>
+  </head><body class="overflow-hidden">
+    <div id="preloader"
+      class="h-screen fixed inset-0 duration-300 pointer-events-none flex items-center justify-center gap-2 flex-col">
+      <svg xmlns="http://www.w3.org/2000/svg" width="452" height="452" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class=" animate-bounce size-36 lucide lucide-database-zap-icon lucide-database-zap">
+        <ellipse cx="12" cy="5" rx="9" ry="3" />
+        <path d="M3 5V19A9 3 0 0 0 15 21.84" />
+        <path d="M21 5V8" />
+        <path d="M21 12L18 17H22L19 22" />
+        <path d="M3 12A9 3 0 0 0 14.59 14.87" />
+      </svg>
+    </div>
+    <div id="root" class="min-h-[inherit] relative z-10 duration-300 scale-[1.2] opacity-0"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+  
+  </html>

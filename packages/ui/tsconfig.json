@@ -1,0 +1,12 @@
+{
+  "extends": "@fastbase/tsconfig/react.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@fastbase/ui/*": ["./src/*"]
+    },
+    "noEmit": true
+  },
+  "include": ["."],
+  "exclude": ["node_modules"]
+}

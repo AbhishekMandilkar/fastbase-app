@@ -1,1 +1,0 @@
-ALTER TABLE `query` ADD `isFavorite` integer;
